@@ -28125,7 +28125,7 @@ function (_Component) {
         fontFam: "Valencia",
         timeDelay: 500
       }), _react.default.createElement("br", null), _react.default.createElement(_TitleReveal.default, {
-        text: "UI/UX Designer & Front-end Developer",
+        text: "Front-end Developer & UI/UX Designer",
         fontFam: "AvenirRoman",
         timeDelay: 1300
       }));
@@ -29958,19 +29958,19 @@ function (_Component) {
       projectName: 'Voistrap',
       projectDesc: 'IoT project to give workplace insights using indoor localization, voice and schedule.',
       projectType: 'iOS APP',
-      roles: ['UI Designer', 'Full Stack Developer']
+      roles: ['Full Stack Developer', 'UI Designer']
     }, {
       number: '02',
       projectName: 'WhatsMyFood',
       projectDesc: 'iOS app to remember your fav food at each restaurant you eat.',
       projectType: 'iOS APP',
-      roles: ['UI Designer', 'Front-end Developer']
+      roles: ['Front-end Developer', 'UI Designer']
     }, {
       number: '03',
       projectName: 'ComingOrNot',
       projectDesc: 'Event planner web app that strives to ease the work of an organizer, conduct events in a less chaotic way.',
       projectType: 'WEB APP',
-      roles: ['UI Designer', 'Front-end Developer']
+      roles: ['Front-end Developer', 'UI Designer']
     }, {
       number: '04',
       projectName: 'Tesla app',
@@ -29982,13 +29982,13 @@ function (_Component) {
       projectName: 'Video portal',
       projectDesc: 'Internal video portal to deliver news to employees all over the world.',
       projectType: 'WEB APP',
-      roles: ['UI Designer', 'Full Stack Developer']
+      roles: ['Full Stack Developer', 'UI Designer']
     }, {
       number: '06',
       projectName: 'Voistrap demo',
       projectDesc: 'Web app project to give workplace insights using indoor localization, voice and schedule.',
       projectType: 'WEB APP',
-      roles: ['UI Designer', 'Full Stack Developer']
+      roles: ['Full Stack Developer', 'UI Designer']
     }, {
       number: '',
       projectName: '',
@@ -30106,7 +30106,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid #EFEFEF; */\n  display: flex;\n  flex-flow: row wrap;\n  justify-content: space-between;\n  align-items: center;\n  font-family: 'AvenirRoman';\n  text-align: left;\n  margin-left: 30%;\n  margin-right: 15%;\n  z-index: 1;\n  transform: translateY(30%);\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid #EFEFEF; */\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: space-between;\n  align-items: center;\n  font-family: 'AvenirRoman';\n  text-align: left;\n  margin-left: 15%;\n  margin-right: 10%;\n  z-index: 1;\n  transform: translateY(30%);\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -30210,7 +30210,7 @@ function (_Component) {
       var scrollPercent = this.state.scrollPercent;
       return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, {
         scrollPercent: scrollPercent
-      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "Research & Wireframing", _react.default.createElement("br", null), "Rapid prototyping", _react.default.createElement("br", null), "Interaction Design", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Studio", _react.default.createElement("br", null), "Figma", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Principle", _react.default.createElement("br", null), "Zeplin", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null), _react.default.createElement("br", null), "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Angular 1", _react.default.createElement("br", null))));
+      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null))));
     }
   }]);
 
@@ -30595,7 +30595,7 @@ function (_Component) {
   _createClass(NameAndJobTitle, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement(Container, null, _react.default.createElement(Name, null, "Suresh Murali"), _react.default.createElement(Title, null, "UI/UX DESIGNER & FRONT-END DEVELOPER"));
+      return _react.default.createElement(Container, null, _react.default.createElement(Name, null, "Suresh Murali"), _react.default.createElement(Title, null, "FRONT-END DEVELOPER & UI/UX DESIGNER"));
     }
   }]);
 
@@ -30932,7 +30932,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65430" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55568" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
