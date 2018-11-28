@@ -29892,8 +29892,7 @@ function (_Component) {
           screenHeight = _this$props.screenHeight;
       var heighttoBeReducedinVH = boxHeight * index - 100;
       var scrollOffset = screenHeight * heighttoBeReducedinVH / 100;
-      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight; // console.log('scrollPercent ', scrollPercent);
-
+      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight;
       scrollPercent -= scrollOffsetInPercent;
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(VoistrapPhonePeople, {
         src: _People.default,
@@ -30082,11 +30081,6 @@ function (_Component) {
       var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight + index - 1; // console.log('WMF scrollOffsetPercent ', scrollOffsetInPercent);
 
       scrollPercent -= scrollOffsetInPercent;
-
-      if (scrollPercent > 0 && scrollPercent < 0.1) {
-        console.log('WMF');
-      }
-
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(AddFood, {
         src: _AddFood.default,
         scroll: scrollPercent,
@@ -30566,14 +30560,8 @@ function (_Component) {
           screenHeight = _this$props.screenHeight;
       var heighttoBeReducedinVH = boxHeight * index - 100;
       var scrollOffset = screenHeight * heighttoBeReducedinVH / 100;
-      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight; // console.log('Voistrap scrollOffsetPercent ', scrollOffsetInPercent);
-
+      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight;
       scrollPercent -= scrollOffsetInPercent;
-
-      if (scrollPercent > 0 && scrollPercent < 0.1) {
-        console.log('Voistrap');
-      }
-
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(PlayerTab, {
         src: _Player.default,
         scroll: scrollPercent,
@@ -31318,7 +31306,7 @@ function (_Component) {
       var scrollPercent = this.state.scrollPercent;
       return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, {
         scrollPercent: scrollPercent
-      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null))));
+      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null))));
     }
   }]);
 
@@ -31767,7 +31755,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirLight';\n  font-size: 24px;\n  text-align: center;\n  @media ", " {\n    padding: 30px;\n    font-size: 18px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 23px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 24px;\n  }\n  @media ", " {\n    padding: 80px;\n    font-size: 30px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  font-size: 24px;\n  text-align: center;\n  @media ", " {\n    padding: 30px;\n    font-size: 20px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 23px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 24px;\n  }\n  @media ", " {\n    padding: 80px;\n    font-size: 30px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31777,7 +31765,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 30vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 50vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31874,7 +31862,104 @@ function (_Component) {
 
 var _default = Hero;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./NameAndJobTitle":"Slides/Mobile/HeroSlide/NameAndJobTitle.js","./AboutMe":"Slides/Mobile/HeroSlide/AboutMe.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./NameAndJobTitle":"Slides/Mobile/HeroSlide/NameAndJobTitle.js","./AboutMe":"Slides/Mobile/HeroSlide/AboutMe.js"}],"Slides/Mobile/Skills.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _breakpoints = _interopRequireDefault(require("../../Assets/Responsive/breakpoints"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  z-index: 1;\n  \n  @media ", " {\n    margin-top: 20px;\n    font-size: 20px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 23px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 25px;\n  }\n  @media ", " {\n    margin-top: 30px;\n    font-size: 30px;\n  }\n"]);
+
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #333;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n    height: 100vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+
+var SkillsTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+
+var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+
+var Skills =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Skills, _Component);
+
+  function Skills() {
+    _classCallCheck(this, Skills);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Skills).apply(this, arguments));
+  }
+
+  _createClass(Skills, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, null, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null), _react.default.createElement("br", null), "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
+    }
+  }]);
+
+  return Skills;
+}(_react.Component);
+
+var _default = Skills;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -31969,6 +32054,8 @@ var _Contact = _interopRequireDefault(require("./Slides/WideScreen/ContactSlide/
 
 var _Hero2 = _interopRequireDefault(require("./Slides/Mobile/HeroSlide/Hero"));
 
+var _Skills2 = _interopRequireDefault(require("./Slides/Mobile/Skills"));
+
 require("./Assets/index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -32021,6 +32108,10 @@ function (_Component) {
   _createClass(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+
       fetch("https://ipinfo.io/json").then(function (data) {
         return data.json();
       }).then(function (ipInfo) {
@@ -32042,7 +32133,7 @@ function (_Component) {
         query: "(min-device-width: 1224px)"
       }, _react.default.createElement(_Hero.default, null), _react.default.createElement(_Work.default, null), _react.default.createElement(_Skills.default, null), _react.default.createElement(_Contact.default, null)), _react.default.createElement(_reactResponsive.default, {
         query: "(max-device-width: 1224px)"
-      }, _react.default.createElement(_Hero2.default, null)), _react.default.createElement(GlobalStyle, null));
+      }, _react.default.createElement(_Hero2.default, null), _react.default.createElement(_Skills2.default, null)), _react.default.createElement(GlobalStyle, null));
     }
   }]);
 
@@ -32050,7 +32141,7 @@ function (_Component) {
 }(_react.Component);
 
 (0, _reactDom.render)(_react.default.createElement(App), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -32077,7 +32168,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62039" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50410" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
