@@ -298,7 +298,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 },{"./lib/ReactPropTypesSecret":"../node_modules/prop-types/lib/ReactPropTypesSecret.js"}],"../node_modules/react/cjs/react.development.js":[function(require,module,exports) {
-/** @license React v16.6.1
+/** @license React v16.6.0
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -317,7 +317,7 @@ if ("development" !== "production") {
     var checkPropTypes = require('prop-types/checkPropTypes'); // TODO: this is special because it gets imported during build.
 
 
-    var ReactVersion = '16.6.3'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+    var ReactVersion = '16.6.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
     // nor polyfill, then a plain number is used for performance.
 
     var hasSymbol = typeof Symbol === 'function' && Symbol.for;
@@ -349,25 +349,6 @@ if ("development" !== "production") {
 
       return null;
     }
-
-    var enableHooks = false; // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
-    // In some cases, StrictMode should also double-render lifecycles.
-    // This can be confusing for tests though,
-    // And it can be bad for performance in production.
-    // This feature flag can be used to control the behavior:
-    // To preserve the "Pause on caught exceptions" behavior of the debugger, we
-    // replay the begin phase of a failed component inside invokeGuardedCallback.
-    // Warn about deprecated, async-unsafe lifecycles; relates to RFC #6:
-    // Gather advanced timing metrics for Profiler subtrees.
-    // Trace which interactions trigger each commit.
-    // Only used in www builds.
-    // Only used in www builds.
-    // React Fire: prevent the value and checked attributes from syncing
-    // with their related DOM properties
-    // These APIs will no longer be "unstable" in the upcoming 16.7 release,
-    // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
-
-    var enableStableConcurrentModeAPIs = false;
     /**
      * Use invariant() to assert state which your program assumes to be true.
      *
@@ -378,6 +359,7 @@ if ("development" !== "production") {
      * The invariant message will be stripped in production, but the invariant
      * will remain to ensure logic does not differ in production.
      */
+
 
     var validateFormat = function () {};
 
@@ -497,13 +479,61 @@ if ("development" !== "production") {
         }
 
         if (typeof console !== 'undefined') {
-          var argsWithFormat = args.map(function (item) {
+          var _args$map = args.map(function (item) {
             return '' + item;
-          });
-          argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
-          // breaks IE9: https://github.com/facebook/react/issues/13610
+          }),
+              a = _args$map[0],
+              b = _args$map[1],
+              c = _args$map[2],
+              d = _args$map[3],
+              e = _args$map[4],
+              f = _args$map[5],
+              g = _args$map[6],
+              h = _args$map[7];
 
-          Function.prototype.apply.call(console.error, console, argsWithFormat);
+          var message = 'Warning: ' + format; // We intentionally don't use spread (or .apply) because it breaks IE9:
+          // https://github.com/facebook/react/issues/13610
+
+          switch (args.length) {
+            case 0:
+              console.error(message);
+              break;
+
+            case 1:
+              console.error(message, a);
+              break;
+
+            case 2:
+              console.error(message, a, b);
+              break;
+
+            case 3:
+              console.error(message, a, b, c);
+              break;
+
+            case 4:
+              console.error(message, a, b, c, d);
+              break;
+
+            case 5:
+              console.error(message, a, b, c, d, e);
+              break;
+
+            case 6:
+              console.error(message, a, b, c, d, e, f);
+              break;
+
+            case 7:
+              console.error(message, a, b, c, d, e, f, g);
+              break;
+
+            case 8:
+              console.error(message, a, b, c, d, e, f, g, h);
+              break;
+
+            default:
+              throw new Error('warningWithoutStack() currently supports at most 8 arguments.');
+          }
         }
 
         try {
@@ -511,10 +541,12 @@ if ("development" !== "production") {
           // This error was thrown as a convenience so that you can use this stack
           // to find the callsite that caused this warning to fire.
           var argIndex = 0;
-          var message = 'Warning: ' + format.replace(/%s/g, function () {
+
+          var _message = 'Warning: ' + format.replace(/%s/g, function () {
             return args[argIndex++];
           });
-          throw new Error(message);
+
+          throw new Error(_message);
         } catch (x) {}
       };
     }
@@ -1605,9 +1637,6 @@ if ("development" !== "production") {
         // Secondary renderers store their context values on separate fields.
         _currentValue: defaultValue,
         _currentValue2: defaultValue,
-        // Used to track how many concurrent renderers this context currently
-        // supports within in a single renderer. Such as parallel server rendering.
-        _threadCount: 0,
         // These are circular
         Provider: null,
         Consumer: null
@@ -1658,14 +1687,6 @@ if ("development" !== "production") {
               context._currentValue2 = _currentValue2;
             }
           },
-          _threadCount: {
-            get: function () {
-              return context._threadCount;
-            },
-            set: function (_threadCount) {
-              context._threadCount = _threadCount;
-            }
-          },
           Consumer: {
             get: function () {
               if (!hasWarnedAboutUsingNestedContextConsumers) {
@@ -1699,9 +1720,7 @@ if ("development" !== "production") {
 
     function forwardRef(render) {
       {
-        if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
-          warningWithoutStack$1(false, 'forwardRef requires a render function but received a `memo` ' + 'component. Instead of forwardRef(memo(...)), use ' + 'memo(forwardRef(...)).');
-        } else if (typeof render !== 'function') {
+        if (typeof render !== 'function') {
           warningWithoutStack$1(false, 'forwardRef requires a render function but was given %s.', render === null ? 'null' : typeof render);
         } else {
           !( // Do not warn for 0 arguments because it could be due to usage of the 'arguments' object
@@ -1734,75 +1753,6 @@ if ("development" !== "production") {
         type: type,
         compare: compare === undefined ? null : compare
       };
-    }
-
-    function resolveDispatcher() {
-      var dispatcher = ReactCurrentOwner.currentDispatcher;
-      !(dispatcher !== null) ? invariant(false, 'Hooks can only be called inside the body of a function component.') : void 0;
-      return dispatcher;
-    }
-
-    function useContext(Context, observedBits) {
-      var dispatcher = resolveDispatcher();
-      {
-        // TODO: add a more generic warning for invalid values.
-        if (Context._context !== undefined) {
-          var realContext = Context._context; // Don't deduplicate because this legitimately causes bugs
-          // and nobody should be using this in existing code.
-
-          if (realContext.Consumer === Context) {
-            warning$1(false, 'Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be ' + 'removed in a future major release. Did you mean to call useContext(Context) instead?');
-          } else if (realContext.Provider === Context) {
-            warning$1(false, 'Calling useContext(Context.Provider) is not supported. ' + 'Did you mean to call useContext(Context) instead?');
-          }
-        }
-      }
-      return dispatcher.useContext(Context, observedBits);
-    }
-
-    function useState(initialState) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useState(initialState);
-    }
-
-    function useReducer(reducer, initialState, initialAction) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useReducer(reducer, initialState, initialAction);
-    }
-
-    function useRef(initialValue) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useRef(initialValue);
-    }
-
-    function useEffect(create, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useEffect(create, inputs);
-    }
-
-    function useMutationEffect(create, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useMutationEffect(create, inputs);
-    }
-
-    function useLayoutEffect(create, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useLayoutEffect(create, inputs);
-    }
-
-    function useCallback(callback, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useCallback(callback, inputs);
-    }
-
-    function useMemo(create, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useMemo(create, inputs);
-    }
-
-    function useImperativeMethods(ref, create, inputs) {
-      var dispatcher = resolveDispatcher();
-      return dispatcher.useImperativeMethods(ref, create, inputs);
     }
     /**
      * ReactElementValidator provides a wrapper around a element factory
@@ -2125,7 +2075,9 @@ if ("development" !== "production") {
       memo: memo,
       Fragment: REACT_FRAGMENT_TYPE,
       StrictMode: REACT_STRICT_MODE_TYPE,
+      unstable_ConcurrentMode: REACT_CONCURRENT_MODE_TYPE,
       Suspense: REACT_SUSPENSE_TYPE,
+      unstable_Profiler: REACT_PROFILER_TYPE,
       createElement: createElementWithValidation,
       cloneElement: cloneElementWithValidation,
       createFactory: createFactoryWithValidation,
@@ -2133,28 +2085,6 @@ if ("development" !== "production") {
       version: ReactVersion,
       __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
     };
-
-    if (enableStableConcurrentModeAPIs) {
-      React.ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-      React.Profiler = REACT_PROFILER_TYPE;
-    } else {
-      React.unstable_ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-      React.unstable_Profiler = REACT_PROFILER_TYPE;
-    }
-
-    if (enableHooks) {
-      React.useCallback = useCallback;
-      React.useContext = useContext;
-      React.useEffect = useEffect;
-      React.useImperativeMethods = useImperativeMethods;
-      React.useLayoutEffect = useLayoutEffect;
-      React.useMemo = useMemo;
-      React.useMutationEffect = useMutationEffect;
-      React.useReducer = useReducer;
-      React.useRef = useRef;
-      React.useState = useState;
-    }
-
     var React$2 = Object.freeze({
       default: React
     });
@@ -23147,1120 +23077,6 @@ if ("development" === 'production') {
   module.exports = require('./cjs/react-dom.development.js');
 }
 },{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"../node_modules/ua-parser-js/src/ua-parser.js":[function(require,module,exports) {
-<<<<<<< HEAD
-var define;
-/*!
- * UAParser.js v0.7.19
- * Lightweight JavaScript-based User-Agent string parser
- * https://github.com/faisalman/ua-parser-js
- *
- * Copyright © 2012-2016 Faisal Salman <fyzlman@gmail.com>
- * Dual licensed under GPLv2 or MIT
- */
-
-(function (window, undefined) {
-
-    'use strict';
-
-    //////////////
-    // Constants
-    /////////////
-
-
-    var LIBVERSION  = '0.7.19',
-        EMPTY       = '',
-        UNKNOWN     = '?',
-        FUNC_TYPE   = 'function',
-        UNDEF_TYPE  = 'undefined',
-        OBJ_TYPE    = 'object',
-        STR_TYPE    = 'string',
-        MAJOR       = 'major', // deprecated
-        MODEL       = 'model',
-        NAME        = 'name',
-        TYPE        = 'type',
-        VENDOR      = 'vendor',
-        VERSION     = 'version',
-        ARCHITECTURE= 'architecture',
-        CONSOLE     = 'console',
-        MOBILE      = 'mobile',
-        TABLET      = 'tablet',
-        SMARTTV     = 'smarttv',
-        WEARABLE    = 'wearable',
-        EMBEDDED    = 'embedded';
-
-
-    ///////////
-    // Helper
-    //////////
-
-
-    var util = {
-        extend : function (regexes, extensions) {
-            var margedRegexes = {};
-            for (var i in regexes) {
-                if (extensions[i] && extensions[i].length % 2 === 0) {
-                    margedRegexes[i] = extensions[i].concat(regexes[i]);
-                } else {
-                    margedRegexes[i] = regexes[i];
-                }
-            }
-            return margedRegexes;
-        },
-        has : function (str1, str2) {
-          if (typeof str1 === "string") {
-            return str2.toLowerCase().indexOf(str1.toLowerCase()) !== -1;
-          } else {
-            return false;
-          }
-        },
-        lowerize : function (str) {
-            return str.toLowerCase();
-        },
-        major : function (version) {
-            return typeof(version) === STR_TYPE ? version.replace(/[^\d\.]/g,'').split(".")[0] : undefined;
-        },
-        trim : function (str) {
-          return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-        }
-    };
-
-
-    ///////////////
-    // Map helper
-    //////////////
-
-
-    var mapper = {
-
-        rgx : function (ua, arrays) {
-
-            //var result = {},
-            var i = 0, j, k, p, q, matches, match;//, args = arguments;
-
-            /*// construct object barebones
-            for (p = 0; p < args[1].length; p++) {
-                q = args[1][p];
-                result[typeof q === OBJ_TYPE ? q[0] : q] = undefined;
-            }*/
-
-            // loop through all regexes maps
-            while (i < arrays.length && !matches) {
-
-                var regex = arrays[i],       // even sequence (0,2,4,..)
-                    props = arrays[i + 1];   // odd sequence (1,3,5,..)
-                j = k = 0;
-
-                // try matching uastring with regexes
-                while (j < regex.length && !matches) {
-
-                    matches = regex[j++].exec(ua);
-
-                    if (!!matches) {
-                        for (p = 0; p < props.length; p++) {
-                            match = matches[++k];
-                            q = props[p];
-                            // check if given property is actually array
-                            if (typeof q === OBJ_TYPE && q.length > 0) {
-                                if (q.length == 2) {
-                                    if (typeof q[1] == FUNC_TYPE) {
-                                        // assign modified match
-                                        this[q[0]] = q[1].call(this, match);
-                                    } else {
-                                        // assign given value, ignore regex match
-                                        this[q[0]] = q[1];
-                                    }
-                                } else if (q.length == 3) {
-                                    // check whether function or regex
-                                    if (typeof q[1] === FUNC_TYPE && !(q[1].exec && q[1].test)) {
-                                        // call function (usually string mapper)
-                                        this[q[0]] = match ? q[1].call(this, match, q[2]) : undefined;
-                                    } else {
-                                        // sanitize match using given regex
-                                        this[q[0]] = match ? match.replace(q[1], q[2]) : undefined;
-                                    }
-                                } else if (q.length == 4) {
-                                        this[q[0]] = match ? q[3].call(this, match.replace(q[1], q[2])) : undefined;
-                                }
-                            } else {
-                                this[q] = match ? match : undefined;
-                            }
-                        }
-                    }
-                }
-                i += 2;
-            }
-            // console.log(this);
-            //return this;
-        },
-
-        str : function (str, map) {
-
-            for (var i in map) {
-                // check if array
-                if (typeof map[i] === OBJ_TYPE && map[i].length > 0) {
-                    for (var j = 0; j < map[i].length; j++) {
-                        if (util.has(map[i][j], str)) {
-                            return (i === UNKNOWN) ? undefined : i;
-                        }
-                    }
-                } else if (util.has(map[i], str)) {
-                    return (i === UNKNOWN) ? undefined : i;
-                }
-            }
-            return str;
-        }
-    };
-
-
-    ///////////////
-    // String map
-    //////////////
-
-
-    var maps = {
-
-        browser : {
-            oldsafari : {
-                version : {
-                    '1.0'   : '/8',
-                    '1.2'   : '/1',
-                    '1.3'   : '/3',
-                    '2.0'   : '/412',
-                    '2.0.2' : '/416',
-                    '2.0.3' : '/417',
-                    '2.0.4' : '/419',
-                    '?'     : '/'
-                }
-            }
-        },
-
-        device : {
-            amazon : {
-                model : {
-                    'Fire Phone' : ['SD', 'KF']
-                }
-            },
-            sprint : {
-                model : {
-                    'Evo Shift 4G' : '7373KT'
-                },
-                vendor : {
-                    'HTC'       : 'APA',
-                    'Sprint'    : 'Sprint'
-                }
-            }
-        },
-
-        os : {
-            windows : {
-                version : {
-                    'ME'        : '4.90',
-                    'NT 3.11'   : 'NT3.51',
-                    'NT 4.0'    : 'NT4.0',
-                    '2000'      : 'NT 5.0',
-                    'XP'        : ['NT 5.1', 'NT 5.2'],
-                    'Vista'     : 'NT 6.0',
-                    '7'         : 'NT 6.1',
-                    '8'         : 'NT 6.2',
-                    '8.1'       : 'NT 6.3',
-                    '10'        : ['NT 6.4', 'NT 10.0'],
-                    'RT'        : 'ARM'
-                }
-            }
-        }
-    };
-
-
-    //////////////
-    // Regex map
-    /////////////
-
-
-    var regexes = {
-
-        browser : [[
-
-            // Presto based
-            /(opera\smini)\/([\w\.-]+)/i,                                       // Opera Mini
-            /(opera\s[mobiletab]+).+version\/([\w\.-]+)/i,                      // Opera Mobi/Tablet
-            /(opera).+version\/([\w\.]+)/i,                                     // Opera > 9.80
-            /(opera)[\/\s]+([\w\.]+)/i                                          // Opera < 9.80
-            ], [NAME, VERSION], [
-
-            /(opios)[\/\s]+([\w\.]+)/i                                          // Opera mini on iphone >= 8.0
-            ], [[NAME, 'Opera Mini'], VERSION], [
-
-            /\s(opr)\/([\w\.]+)/i                                               // Opera Webkit
-            ], [[NAME, 'Opera'], VERSION], [
-
-            // Mixed
-            /(kindle)\/([\w\.]+)/i,                                             // Kindle
-            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]*)/i,
-                                                                                // Lunascape/Maxthon/Netfront/Jasmine/Blazer
-
-            // Trident based
-            /(avant\s|iemobile|slim|baidu)(?:browser)?[\/\s]?([\w\.]*)/i,
-                                                                                // Avant/IEMobile/SlimBrowser/Baidu
-            /(?:ms|\()(ie)\s([\w\.]+)/i,                                        // Internet Explorer
-
-            // Webkit/KHTML based
-            /(rekonq)\/([\w\.]*)/i,                                             // Rekonq
-            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark)\/([\w\.-]+)/i
-                                                                                // Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser
-            ], [NAME, VERSION], [
-
-            /(trident).+rv[:\s]([\w\.]+).+like\sgecko/i                         // IE11
-            ], [[NAME, 'IE'], VERSION], [
-
-            /(edge|edgios|edga)\/((\d+)?[\w\.]+)/i                              // Microsoft Edge
-            ], [[NAME, 'Edge'], VERSION], [
-
-            /(yabrowser)\/([\w\.]+)/i                                           // Yandex
-            ], [[NAME, 'Yandex'], VERSION], [
-
-            /(puffin)\/([\w\.]+)/i                                              // Puffin
-            ], [[NAME, 'Puffin'], VERSION], [
-
-            /(focus)\/([\w\.]+)/i                                               // Firefox Focus
-            ], [[NAME, 'Firefox Focus'], VERSION], [
-
-            /(opt)\/([\w\.]+)/i                                                 // Opera Touch
-            ], [[NAME, 'Opera Touch'], VERSION], [
-
-            /((?:[\s\/])uc?\s?browser|(?:juc.+)ucweb)[\/\s]?([\w\.]+)/i         // UCBrowser
-            ], [[NAME, 'UCBrowser'], VERSION], [
-
-            /(comodo_dragon)\/([\w\.]+)/i                                       // Comodo Dragon
-            ], [[NAME, /_/g, ' '], VERSION], [
-
-            /(micromessenger)\/([\w\.]+)/i                                      // WeChat
-            ], [[NAME, 'WeChat'], VERSION], [
-
-            /(brave)\/([\w\.]+)/i                                              // Brave browser
-            ], [[NAME, 'Brave'], VERSION], [
-
-            /(qqbrowserlite)\/([\w\.]+)/i                                       // QQBrowserLite
-            ], [NAME, VERSION], [
-
-            /(QQ)\/([\d\.]+)/i                                                  // QQ, aka ShouQ
-            ], [NAME, VERSION], [
-
-            /m?(qqbrowser)[\/\s]?([\w\.]+)/i                                    // QQBrowser
-            ], [NAME, VERSION], [
-
-            /(BIDUBrowser)[\/\s]?([\w\.]+)/i                                    // Baidu Browser
-            ], [NAME, VERSION], [
-
-            /(2345Explorer)[\/\s]?([\w\.]+)/i                                   // 2345 Browser
-            ], [NAME, VERSION], [
-
-            /(MetaSr)[\/\s]?([\w\.]+)/i                                         // SouGouBrowser
-            ], [NAME], [
-
-            /(LBBROWSER)/i                                      // LieBao Browser
-            ], [NAME], [
-
-            /xiaomi\/miuibrowser\/([\w\.]+)/i                                   // MIUI Browser
-            ], [VERSION, [NAME, 'MIUI Browser']], [
-
-            /;fbav\/([\w\.]+);/i                                                // Facebook App for iOS & Android
-            ], [VERSION, [NAME, 'Facebook']], [
-
-            /safari\s(line)\/([\w\.]+)/i,                                       // Line App for iOS
-            /android.+(line)\/([\w\.]+)\/iab/i                                  // Line App for Android
-            ], [NAME, VERSION], [
-
-            /headlesschrome(?:\/([\w\.]+)|\s)/i                                 // Chrome Headless
-            ], [VERSION, [NAME, 'Chrome Headless']], [
-
-            /\swv\).+(chrome)\/([\w\.]+)/i                                      // Chrome WebView
-            ], [[NAME, /(.+)/, '$1 WebView'], VERSION], [
-
-            /((?:oculus|samsung)browser)\/([\w\.]+)/i
-            ], [[NAME, /(.+(?:g|us))(.+)/, '$1 $2'], VERSION], [                // Oculus / Samsung Browser
-
-            /android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i        // Android Browser
-            ], [VERSION, [NAME, 'Android Browser']], [
-
-            /(chrome|omniweb|arora|[tizenoka]{5}\s?browser)\/v?([\w\.]+)/i
-                                                                                // Chrome/OmniWeb/Arora/Tizen/Nokia
-            ], [NAME, VERSION], [
-
-            /(dolfin)\/([\w\.]+)/i                                              // Dolphin
-            ], [[NAME, 'Dolphin'], VERSION], [
-
-            /((?:android.+)crmo|crios)\/([\w\.]+)/i                             // Chrome for Android/iOS
-            ], [[NAME, 'Chrome'], VERSION], [
-
-            /(coast)\/([\w\.]+)/i                                               // Opera Coast
-            ], [[NAME, 'Opera Coast'], VERSION], [
-
-            /fxios\/([\w\.-]+)/i                                                // Firefox for iOS
-            ], [VERSION, [NAME, 'Firefox']], [
-
-            /version\/([\w\.]+).+?mobile\/\w+\s(safari)/i                       // Mobile Safari
-            ], [VERSION, [NAME, 'Mobile Safari']], [
-
-            /version\/([\w\.]+).+?(mobile\s?safari|safari)/i                    // Safari & Safari Mobile
-            ], [VERSION, NAME], [
-
-            /webkit.+?(gsa)\/([\w\.]+).+?(mobile\s?safari|safari)(\/[\w\.]+)/i  // Google Search Appliance on iOS
-            ], [[NAME, 'GSA'], VERSION], [
-
-            /webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i                     // Safari < 3.0
-            ], [NAME, [VERSION, mapper.str, maps.browser.oldsafari.version]], [
-
-            /(konqueror)\/([\w\.]+)/i,                                          // Konqueror
-            /(webkit|khtml)\/([\w\.]+)/i
-            ], [NAME, VERSION], [
-
-            // Gecko based
-            /(navigator|netscape)\/([\w\.-]+)/i                                 // Netscape
-            ], [[NAME, 'Netscape'], VERSION], [
-            /(swiftfox)/i,                                                      // Swiftfox
-            /(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,
-                                                                                // IceDragon/Iceweasel/Camino/Chimera/Fennec/Maemo/Minimo/Conkeror
-            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix|palemoon|basilisk|waterfox)\/([\w\.-]+)$/i,
-
-                                                                                // Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
-            /(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,                          // Mozilla
-
-            // Other
-            /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,
-                                                                                // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir
-            /(links)\s\(([\w\.]+)/i,                                            // Links
-            /(gobrowser)\/?([\w\.]*)/i,                                         // GoBrowser
-            /(ice\s?browser)\/v?([\w\._]+)/i,                                   // ICE Browser
-            /(mosaic)[\/\s]([\w\.]+)/i                                          // Mosaic
-            ], [NAME, VERSION]
-
-            /* /////////////////////
-            // Media players BEGIN
-            ////////////////////////
-
-            , [
-
-            /(apple(?:coremedia|))\/((\d+)[\w\._]+)/i,                          // Generic Apple CoreMedia
-            /(coremedia) v((\d+)[\w\._]+)/i
-            ], [NAME, VERSION], [
-
-            /(aqualung|lyssna|bsplayer)\/((\d+)?[\w\.-]+)/i                     // Aqualung/Lyssna/BSPlayer
-            ], [NAME, VERSION], [
-
-            /(ares|ossproxy)\s((\d+)[\w\.-]+)/i                                 // Ares/OSSProxy
-            ], [NAME, VERSION], [
-
-            /(audacious|audimusicstream|amarok|bass|core|dalvik|gnomemplayer|music on console|nsplayer|psp-internetradioplayer|videos)\/((\d+)[\w\.-]+)/i,
-                                                                                // Audacious/AudiMusicStream/Amarok/BASS/OpenCORE/Dalvik/GnomeMplayer/MoC
-                                                                                // NSPlayer/PSP-InternetRadioPlayer/Videos
-            /(clementine|music player daemon)\s((\d+)[\w\.-]+)/i,               // Clementine/MPD
-            /(lg player|nexplayer)\s((\d+)[\d\.]+)/i,
-            /player\/(nexplayer|lg player)\s((\d+)[\w\.-]+)/i                   // NexPlayer/LG Player
-            ], [NAME, VERSION], [
-            /(nexplayer)\s((\d+)[\w\.-]+)/i                                     // Nexplayer
-            ], [NAME, VERSION], [
-
-            /(flrp)\/((\d+)[\w\.-]+)/i                                          // Flip Player
-            ], [[NAME, 'Flip Player'], VERSION], [
-
-            /(fstream|nativehost|queryseekspider|ia-archiver|facebookexternalhit)/i
-                                                                                // FStream/NativeHost/QuerySeekSpider/IA Archiver/facebookexternalhit
-            ], [NAME], [
-
-            /(gstreamer) souphttpsrc (?:\([^\)]+\)){0,1} libsoup\/((\d+)[\w\.-]+)/i
-                                                                                // Gstreamer
-            ], [NAME, VERSION], [
-
-            /(htc streaming player)\s[\w_]+\s\/\s((\d+)[\d\.]+)/i,              // HTC Streaming Player
-            /(java|python-urllib|python-requests|wget|libcurl)\/((\d+)[\w\.-_]+)/i,
-                                                                                // Java/urllib/requests/wget/cURL
-            /(lavf)((\d+)[\d\.]+)/i                                             // Lavf (FFMPEG)
-            ], [NAME, VERSION], [
-
-            /(htc_one_s)\/((\d+)[\d\.]+)/i                                      // HTC One S
-            ], [[NAME, /_/g, ' '], VERSION], [
-
-            /(mplayer)(?:\s|\/)(?:(?:sherpya-){0,1}svn)(?:-|\s)(r\d+(?:-\d+[\w\.-]+){0,1})/i
-                                                                                // MPlayer SVN
-            ], [NAME, VERSION], [
-
-            /(mplayer)(?:\s|\/|[unkow-]+)((\d+)[\w\.-]+)/i                      // MPlayer
-            ], [NAME, VERSION], [
-
-            /(mplayer)/i,                                                       // MPlayer (no other info)
-            /(yourmuze)/i,                                                      // YourMuze
-            /(media player classic|nero showtime)/i                             // Media Player Classic/Nero ShowTime
-            ], [NAME], [
-
-            /(nero (?:home|scout))\/((\d+)[\w\.-]+)/i                           // Nero Home/Nero Scout
-            ], [NAME, VERSION], [
-
-            /(nokia\d+)\/((\d+)[\w\.-]+)/i                                      // Nokia
-            ], [NAME, VERSION], [
-
-            /\s(songbird)\/((\d+)[\w\.-]+)/i                                    // Songbird/Philips-Songbird
-            ], [NAME, VERSION], [
-
-            /(winamp)3 version ((\d+)[\w\.-]+)/i,                               // Winamp
-            /(winamp)\s((\d+)[\w\.-]+)/i,
-            /(winamp)mpeg\/((\d+)[\w\.-]+)/i
-            ], [NAME, VERSION], [
-
-            /(ocms-bot|tapinradio|tunein radio|unknown|winamp|inlight radio)/i  // OCMS-bot/tap in radio/tunein/unknown/winamp (no other info)
-                                                                                // inlight radio
-            ], [NAME], [
-
-            /(quicktime|rma|radioapp|radioclientapplication|soundtap|totem|stagefright|streamium)\/((\d+)[\w\.-]+)/i
-                                                                                // QuickTime/RealMedia/RadioApp/RadioClientApplication/
-                                                                                // SoundTap/Totem/Stagefright/Streamium
-            ], [NAME, VERSION], [
-
-            /(smp)((\d+)[\d\.]+)/i                                              // SMP
-            ], [NAME, VERSION], [
-
-            /(vlc) media player - version ((\d+)[\w\.]+)/i,                     // VLC Videolan
-            /(vlc)\/((\d+)[\w\.-]+)/i,
-            /(xbmc|gvfs|xine|xmms|irapp)\/((\d+)[\w\.-]+)/i,                    // XBMC/gvfs/Xine/XMMS/irapp
-            /(foobar2000)\/((\d+)[\d\.]+)/i,                                    // Foobar2000
-            /(itunes)\/((\d+)[\d\.]+)/i                                         // iTunes
-            ], [NAME, VERSION], [
-
-            /(wmplayer)\/((\d+)[\w\.-]+)/i,                                     // Windows Media Player
-            /(windows-media-player)\/((\d+)[\w\.-]+)/i
-            ], [[NAME, /-/g, ' '], VERSION], [
-
-            /windows\/((\d+)[\w\.-]+) upnp\/[\d\.]+ dlnadoc\/[\d\.]+ (home media server)/i
-                                                                                // Windows Media Server
-            ], [VERSION, [NAME, 'Windows']], [
-
-            /(com\.riseupradioalarm)\/((\d+)[\d\.]*)/i                          // RiseUP Radio Alarm
-            ], [NAME, VERSION], [
-
-            /(rad.io)\s((\d+)[\d\.]+)/i,                                        // Rad.io
-            /(radio.(?:de|at|fr))\s((\d+)[\d\.]+)/i
-            ], [[NAME, 'rad.io'], VERSION]
-
-            //////////////////////
-            // Media players END
-            ////////////////////*/
-
-        ],
-
-        cpu : [[
-
-            /(?:(amd|x(?:(?:86|64)[_-])?|wow|win)64)[;\)]/i                     // AMD64
-            ], [[ARCHITECTURE, 'amd64']], [
-
-            /(ia32(?=;))/i                                                      // IA32 (quicktime)
-            ], [[ARCHITECTURE, util.lowerize]], [
-
-            /((?:i[346]|x)86)[;\)]/i                                            // IA32
-            ], [[ARCHITECTURE, 'ia32']], [
-
-            // PocketPC mistakenly identified as PowerPC
-            /windows\s(ce|mobile);\sppc;/i
-            ], [[ARCHITECTURE, 'arm']], [
-
-            /((?:ppc|powerpc)(?:64)?)(?:\smac|;|\))/i                           // PowerPC
-            ], [[ARCHITECTURE, /ower/, '', util.lowerize]], [
-
-            /(sun4\w)[;\)]/i                                                    // SPARC
-            ], [[ARCHITECTURE, 'sparc']], [
-
-            /((?:avr32|ia64(?=;))|68k(?=\))|arm(?:64|(?=v\d+[;l]))|(?=atmel\s)avr|(?:irix|mips|sparc)(?:64)?(?=;)|pa-risc)/i
-                                                                                // IA64, 68K, ARM/64, AVR/32, IRIX/64, MIPS/64, SPARC/64, PA-RISC
-            ], [[ARCHITECTURE, util.lowerize]]
-        ],
-
-        device : [[
-
-            /\((ipad|playbook);[\w\s\);-]+(rim|apple)/i                         // iPad/PlayBook
-            ], [MODEL, VENDOR, [TYPE, TABLET]], [
-
-            /applecoremedia\/[\w\.]+ \((ipad)/                                  // iPad
-            ], [MODEL, [VENDOR, 'Apple'], [TYPE, TABLET]], [
-
-            /(apple\s{0,1}tv)/i                                                 // Apple TV
-            ], [[MODEL, 'Apple TV'], [VENDOR, 'Apple']], [
-
-            /(archos)\s(gamepad2?)/i,                                           // Archos
-            /(hp).+(touchpad)/i,                                                // HP TouchPad
-            /(hp).+(tablet)/i,                                                  // HP Tablet
-            /(kindle)\/([\w\.]+)/i,                                             // Kindle
-            /\s(nook)[\w\s]+build\/(\w+)/i,                                     // Nook
-            /(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
-            ], [VENDOR, MODEL, [TYPE, TABLET]], [
-
-            /(kf[A-z]+)\sbuild\/.+silk\//i                                      // Kindle Fire HD
-            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
-            /(sd|kf)[0349hijorstuw]+\sbuild\/.+silk\//i                         // Fire Phone
-            ], [[MODEL, mapper.str, maps.device.amazon.model], [VENDOR, 'Amazon'], [TYPE, MOBILE]], [
-            /android.+aft([bms])\sbuild/i                                       // Fire TV
-            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, SMARTTV]], [
-
-            /\((ip[honed|\s\w*]+);.+(apple)/i                                   // iPod/iPhone
-            ], [MODEL, VENDOR, [TYPE, MOBILE]], [
-            /\((ip[honed|\s\w*]+);/i                                            // iPod/iPhone
-            ], [MODEL, [VENDOR, 'Apple'], [TYPE, MOBILE]], [
-
-            /(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
-            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]*)/i,
-                                                                                // BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
-            /(hp)\s([\w\s]+\w)/i,                                               // HP iPAQ
-            /(asus)-?(\w+)/i                                                    // Asus
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-            /\(bb10;\s(\w+)/i                                                   // BlackBerry 10
-            ], [MODEL, [VENDOR, 'BlackBerry'], [TYPE, MOBILE]], [
-                                                                                // Asus Tablets
-            /android.+(transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+|nexus 7|padfone)/i
-            ], [MODEL, [VENDOR, 'Asus'], [TYPE, TABLET]], [
-
-            /(sony)\s(tablet\s[ps])\sbuild\//i,                                  // Sony
-            /(sony)?(?:sgp.+)\sbuild\//i
-            ], [[VENDOR, 'Sony'], [MODEL, 'Xperia Tablet'], [TYPE, TABLET]], [
-            /android.+\s([c-g]\d{4}|so[-l]\w+)\sbuild\//i
-            ], [MODEL, [VENDOR, 'Sony'], [TYPE, MOBILE]], [
-
-            /\s(ouya)\s/i,                                                      // Ouya
-            /(nintendo)\s([wids3u]+)/i                                          // Nintendo
-            ], [VENDOR, MODEL, [TYPE, CONSOLE]], [
-
-            /android.+;\s(shield)\sbuild/i                                      // Nvidia
-            ], [MODEL, [VENDOR, 'Nvidia'], [TYPE, CONSOLE]], [
-
-            /(playstation\s[34portablevi]+)/i                                   // Playstation
-            ], [MODEL, [VENDOR, 'Sony'], [TYPE, CONSOLE]], [
-
-            /(sprint\s(\w+))/i                                                  // Sprint Phones
-            ], [[VENDOR, mapper.str, maps.device.sprint.vendor], [MODEL, mapper.str, maps.device.sprint.model], [TYPE, MOBILE]], [
-
-            /(lenovo)\s?(S(?:5000|6000)+(?:[-][\w+]))/i                         // Lenovo tablets
-            ], [VENDOR, MODEL, [TYPE, TABLET]], [
-
-            /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
-            /(zte)-(\w*)/i,                                                     // ZTE
-            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]*)/i
-                                                                                // Alcatel/GeeksPhone/Lenovo/Nexian/Panasonic/Sony
-            ], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
-
-            /(nexus\s9)/i                                                       // HTC Nexus 9
-            ], [MODEL, [VENDOR, 'HTC'], [TYPE, TABLET]], [
-
-            /d\/huawei([\w\s-]+)[;\)]/i,
-            /(nexus\s6p)/i                                                      // Huawei
-            ], [MODEL, [VENDOR, 'Huawei'], [TYPE, MOBILE]], [
-
-            /(microsoft);\s(lumia[\s\w]+)/i                                     // Microsoft Lumia
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-
-            /[\s\(;](xbox(?:\sone)?)[\s\);]/i                                   // Microsoft Xbox
-            ], [MODEL, [VENDOR, 'Microsoft'], [TYPE, CONSOLE]], [
-            /(kin\.[onetw]{3})/i                                                // Microsoft Kin
-            ], [[MODEL, /\./g, ' '], [VENDOR, 'Microsoft'], [TYPE, MOBILE]], [
-
-                                                                                // Motorola
-            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?:?(\s4g)?)[\w\s]+build\//i,
-            /mot[\s-]?(\w*)/i,
-            /(XT\d{3,4}) build\//i,
-            /(nexus\s6)/i
-            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, MOBILE]], [
-            /android.+\s(mz60\d|xoom[\s2]{0,2})\sbuild\//i
-            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, TABLET]], [
-
-            /hbbtv\/\d+\.\d+\.\d+\s+\([\w\s]*;\s*(\w[^;]*);([^;]*)/i            // HbbTV devices
-            ], [[VENDOR, util.trim], [MODEL, util.trim], [TYPE, SMARTTV]], [
-
-            /hbbtv.+maple;(\d+)/i
-            ], [[MODEL, /^/, 'SmartTV'], [VENDOR, 'Samsung'], [TYPE, SMARTTV]], [
-
-            /\(dtv[\);].+(aquos)/i                                              // Sharp
-            ], [MODEL, [VENDOR, 'Sharp'], [TYPE, SMARTTV]], [
-
-            /android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n\d+|sgh-t8[56]9|nexus 10))/i,
-            /((SM-T\w+))/i
-            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, TABLET]], [                  // Samsung
-            /smart-tv.+(samsung)/i
-            ], [VENDOR, [TYPE, SMARTTV], MODEL], [
-            /((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,
-            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)/i,
-            /sec-((sgh\w+))/i
-            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
-
-            /sie-(\w*)/i                                                        // Siemens
-            ], [MODEL, [VENDOR, 'Siemens'], [TYPE, MOBILE]], [
-
-            /(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
-            /(nokia)[\s_-]?([\w-]*)/i
-            ], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
-
-            /android\s3\.[\s\w;-]{10}(a\d{3})/i                                 // Acer
-            ], [MODEL, [VENDOR, 'Acer'], [TYPE, TABLET]], [
-
-            /android.+([vl]k\-?\d{3})\s+build/i                                 // LG Tablet
-            ], [MODEL, [VENDOR, 'LG'], [TYPE, TABLET]], [
-            /android\s3\.[\s\w;-]{10}(lg?)-([06cv9]{3,4})/i                     // LG Tablet
-            ], [[VENDOR, 'LG'], MODEL, [TYPE, TABLET]], [
-            /(lg) netcast\.tv/i                                                 // LG SmartTV
-            ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
-            /(nexus\s[45])/i,                                                   // LG
-            /lg[e;\s\/-]+(\w*)/i,
-            /android.+lg(\-?[\d\w]+)\s+build/i
-            ], [MODEL, [VENDOR, 'LG'], [TYPE, MOBILE]], [
-
-            /android.+(ideatab[a-z0-9\-\s]+)/i                                  // Lenovo
-            ], [MODEL, [VENDOR, 'Lenovo'], [TYPE, TABLET]], [
-
-            /linux;.+((jolla));/i                                               // Jolla
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-
-            /((pebble))app\/[\d\.]+\s/i                                         // Pebble
-            ], [VENDOR, MODEL, [TYPE, WEARABLE]], [
-
-            /android.+;\s(oppo)\s?([\w\s]+)\sbuild/i                            // OPPO
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-
-            /crkey/i                                                            // Google Chromecast
-            ], [[MODEL, 'Chromecast'], [VENDOR, 'Google']], [
-
-            /android.+;\s(glass)\s\d/i                                          // Google Glass
-            ], [MODEL, [VENDOR, 'Google'], [TYPE, WEARABLE]], [
-
-            /android.+;\s(pixel c)[\s)]/i                                       // Google Pixel C
-            ], [MODEL, [VENDOR, 'Google'], [TYPE, TABLET]], [
-
-            /android.+;\s(pixel( [23])?( xl)?)\s/i                              // Google Pixel
-            ], [MODEL, [VENDOR, 'Google'], [TYPE, MOBILE]], [
-
-            /android.+;\s(\w+)\s+build\/hm\1/i,                                 // Xiaomi Hongmi 'numeric' models
-            /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
-            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d?\w?)[\s_]*(?:plus)?)\s+build/i,    // Xiaomi Mi
-            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+))\s+build/i       // Redmi Phones
-            ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
-            /android.+(mi[\s\-_]*(?:pad)(?:[\s_]*[\w\s]+))\s+build/i            // Mi Pad tablets
-            ],[[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, TABLET]], [
-            /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
-            ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
-            /(mz)-([\w-]{2,})/i                                                 // Meizu Phone
-            ], [[VENDOR, 'Meizu'], MODEL, [TYPE, MOBILE]], [
-
-            /android.+a000(1)\s+build/i,                                        // OnePlus
-            /android.+oneplus\s(a\d{4})\s+build/i
-            ], [MODEL, [VENDOR, 'OnePlus'], [TYPE, MOBILE]], [
-
-            /android.+[;\/]\s*(RCT[\d\w]+)\s+build/i                            // RCA Tablets
-            ], [MODEL, [VENDOR, 'RCA'], [TYPE, TABLET]], [
-
-            /android.+[;\/\s]+(Venue[\d\s]{2,7})\s+build/i                      // Dell Venue Tablets
-            ], [MODEL, [VENDOR, 'Dell'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i                         // Verizon Tablet
-            ], [MODEL, [VENDOR, 'Verizon'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s+(Barnes[&\s]+Noble\s+|BN[RT])(V?.*)\s+build/i     // Barnes & Noble Tablet
-            ], [[VENDOR, 'Barnes & Noble'], MODEL, [TYPE, TABLET]], [
-
-            /android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i                           // Barnes & Noble Tablet
-            ], [MODEL, [VENDOR, 'NuVision'], [TYPE, TABLET]], [
-
-            /android.+;\s(k88)\sbuild/i                                         // ZTE K Series Tablet
-            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(gen\d{3})\s+build.*49h/i                         // Swiss GEN Mobile
-            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, MOBILE]], [
-
-            /android.+[;\/]\s*(zur\d{3})\s+build/i                              // Swiss ZUR Tablet
-            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i                         // Zeki Tablets
-            ], [MODEL, [VENDOR, 'Zeki'], [TYPE, TABLET]], [
-
-            /(android).+[;\/]\s+([YR]\d{2})\s+build/i,
-            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(\w{5})\sbuild/i        // Dragon Touch Tablet
-            ], [[VENDOR, 'Dragon Touch'], MODEL, [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(NS-?\w{0,9})\sbuild/i                            // Insignia Tablets
-            ], [MODEL, [VENDOR, 'Insignia'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*((NX|Next)-?\w{0,9})\s+build/i                    // NextBook Tablets
-            ], [MODEL, [VENDOR, 'NextBook'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(Xtreme\_)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
-            ], [[VENDOR, 'Voice'], MODEL, [TYPE, MOBILE]], [                    // Voice Xtreme Phones
-
-            /android.+[;\/]\s*(LVTEL\-)?(V1[12])\s+build/i                     // LvTel Phones
-            ], [[VENDOR, 'LvTel'], MODEL, [TYPE, MOBILE]], [
-
-            /android.+;\s(PH-1)\s/i
-            ], [MODEL, [VENDOR, 'Essential'], [TYPE, MOBILE]], [                // Essential PH-1
-
-            /android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i          // Envizen Tablets
-            ], [MODEL, [VENDOR, 'Envizen'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(\w{1,9})\s+build/i          // Le Pan Tablets
-            ], [VENDOR, MODEL, [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i                         // MachSpeed Tablets
-            ], [MODEL, [VENDOR, 'MachSpeed'], [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*(Trinity)[\-\s]*(T\d{3})\s+build/i                // Trinity Tablets
-            ], [VENDOR, MODEL, [TYPE, TABLET]], [
-
-            /android.+[;\/]\s*TU_(1491)\s+build/i                               // Rotor Tablets
-            ], [MODEL, [VENDOR, 'Rotor'], [TYPE, TABLET]], [
-
-            /android.+(KS(.+))\s+build/i                                        // Amazon Kindle Tablets
-            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
-
-            /android.+(Gigaset)[\s\-]+(Q\w{1,9})\s+build/i                      // Gigaset Tablets
-            ], [VENDOR, MODEL, [TYPE, TABLET]], [
-
-            /\s(tablet|tab)[;\/]/i,                                             // Unidentifiable Tablet
-            /\s(mobile)(?:[;\/]|\ssafari)/i                                     // Unidentifiable Mobile
-            ], [[TYPE, util.lowerize], VENDOR, MODEL], [
-
-            /(android[\w\.\s\-]{0,9});.+build/i                                 // Generic Android Device
-            ], [MODEL, [VENDOR, 'Generic']]
-
-
-        /*//////////////////////////
-            // TODO: move to string map
-            ////////////////////////////
-
-            /(C6603)/i                                                          // Sony Xperia Z C6603
-            ], [[MODEL, 'Xperia Z C6603'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
-            /(C6903)/i                                                          // Sony Xperia Z 1
-            ], [[MODEL, 'Xperia Z 1'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
-
-            /(SM-G900[F|H])/i                                                   // Samsung Galaxy S5
-            ], [[MODEL, 'Galaxy S5'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
-            /(SM-G7102)/i                                                       // Samsung Galaxy Grand 2
-            ], [[MODEL, 'Galaxy Grand 2'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
-            /(SM-G530H)/i                                                       // Samsung Galaxy Grand Prime
-            ], [[MODEL, 'Galaxy Grand Prime'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
-            /(SM-G313HZ)/i                                                      // Samsung Galaxy V
-            ], [[MODEL, 'Galaxy V'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
-            /(SM-T805)/i                                                        // Samsung Galaxy Tab S 10.5
-            ], [[MODEL, 'Galaxy Tab S 10.5'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
-            /(SM-G800F)/i                                                       // Samsung Galaxy S5 Mini
-            ], [[MODEL, 'Galaxy S5 Mini'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
-            /(SM-T311)/i                                                        // Samsung Galaxy Tab 3 8.0
-            ], [[MODEL, 'Galaxy Tab 3 8.0'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
-
-            /(T3C)/i                                                            // Advan Vandroid T3C
-            ], [MODEL, [VENDOR, 'Advan'], [TYPE, TABLET]], [
-            /(ADVAN T1J\+)/i                                                    // Advan Vandroid T1J+
-            ], [[MODEL, 'Vandroid T1J+'], [VENDOR, 'Advan'], [TYPE, TABLET]], [
-            /(ADVAN S4A)/i                                                      // Advan Vandroid S4A
-            ], [[MODEL, 'Vandroid S4A'], [VENDOR, 'Advan'], [TYPE, MOBILE]], [
-
-            /(V972M)/i                                                          // ZTE V972M
-            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, MOBILE]], [
-
-            /(i-mobile)\s(IQ\s[\d\.]+)/i                                        // i-mobile IQ
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-            /(IQ6.3)/i                                                          // i-mobile IQ IQ 6.3
-            ], [[MODEL, 'IQ 6.3'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
-            /(i-mobile)\s(i-style\s[\d\.]+)/i                                   // i-mobile i-STYLE
-            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
-            /(i-STYLE2.1)/i                                                     // i-mobile i-STYLE 2.1
-            ], [[MODEL, 'i-STYLE 2.1'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
-
-            /(mobiistar touch LAI 512)/i                                        // mobiistar touch LAI 512
-            ], [[MODEL, 'Touch LAI 512'], [VENDOR, 'mobiistar'], [TYPE, MOBILE]], [
-
-            /////////////
-            // END TODO
-            ///////////*/
-
-        ],
-
-        engine : [[
-
-            /windows.+\sedge\/([\w\.]+)/i                                       // EdgeHTML
-            ], [VERSION, [NAME, 'EdgeHTML']], [
-
-            /(presto)\/([\w\.]+)/i,                                             // Presto
-            /(webkit|trident|netfront|netsurf|amaya|lynx|w3m)\/([\w\.]+)/i,     // WebKit/Trident/NetFront/NetSurf/Amaya/Lynx/w3m
-            /(khtml|tasman|links)[\/\s]\(?([\w\.]+)/i,                          // KHTML/Tasman/Links
-            /(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
-            ], [NAME, VERSION], [
-
-            /rv\:([\w\.]{1,9}).+(gecko)/i                                       // Gecko
-            ], [VERSION, NAME]
-        ],
-
-        os : [[
-
-            // Windows based
-            /microsoft\s(windows)\s(vista|xp)/i                                 // Windows (iTunes)
-            ], [NAME, VERSION], [
-            /(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
-            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s\w]*)/i,                   // Windows Phone
-            /(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
-            ], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
-            /(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
-            ], [[NAME, 'Windows'], [VERSION, mapper.str, maps.os.windows.version]], [
-
-            // Mobile/Embedded OS
-            /\((bb)(10);/i                                                      // BlackBerry 10
-            ], [[NAME, 'BlackBerry'], VERSION], [
-            /(blackberry)\w*\/?([\w\.]*)/i,                                     // Blackberry
-            /(tizen)[\/\s]([\w\.]+)/i,                                          // Tizen
-            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]*)/i,
-                                                                                // Android/WebOS/Palm/QNX/Bada/RIM/MeeGo/Contiki
-            /linux;.+(sailfish);/i                                              // Sailfish OS
-            ], [NAME, VERSION], [
-            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]*)/i                  // Symbian
-            ], [[NAME, 'Symbian'], VERSION], [
-            /\((series40);/i                                                    // Series 40
-            ], [NAME], [
-            /mozilla.+\(mobile;.+gecko.+firefox/i                               // Firefox OS
-            ], [[NAME, 'Firefox OS'], VERSION], [
-
-            // Console
-            /(nintendo|playstation)\s([wids34portablevu]+)/i,                   // Nintendo/Playstation
-
-            // GNU/Linux based
-            /(mint)[\/\s\(]?(\w*)/i,                                            // Mint
-            /(mageia|vectorlinux)[;\s]/i,                                       // Mageia/VectorLinux
-            /(joli|[kxln]?ubuntu|debian|suse|opensuse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]*)/i,
-                                                                                // Joli/Ubuntu/Debian/SUSE/Gentoo/Arch/Slackware
-                                                                                // Fedora/Mandriva/CentOS/PCLinuxOS/RedHat/Zenwalk/Linpus
-            /(hurd|linux)\s?([\w\.]*)/i,                                        // Hurd/Linux
-            /(gnu)\s?([\w\.]*)/i                                                // GNU
-            ], [NAME, VERSION], [
-
-            /(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
-            ], [[NAME, 'Chromium OS'], VERSION],[
-
-            // Solaris
-            /(sunos)\s?([\w\.\d]*)/i                                            // Solaris
-            ], [[NAME, 'Solaris'], VERSION], [
-
-            // BSD based
-            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]*)/i                    // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
-            ], [NAME, VERSION],[
-
-            /(haiku)\s(\w+)/i                                                   // Haiku
-            ], [NAME, VERSION],[
-
-            /cfnetwork\/.+darwin/i,
-            /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i             // iOS
-            ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
-
-            /(mac\sos\sx)\s?([\w\s\.]*)/i,
-            /(macintosh|mac(?=_powerpc)\s)/i                                    // Mac OS
-            ], [[NAME, 'Mac OS'], [VERSION, /_/g, '.']], [
-
-            // Other
-            /((?:open)?solaris)[\/\s-]?([\w\.]*)/i,                             // Solaris
-            /(aix)\s((\d)(?=\.|\)|\s)[\w\.])*/i,                                // AIX
-            /(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms|fuchsia)/i,
-                                                                                // Plan9/Minix/BeOS/OS2/AmigaOS/MorphOS/RISCOS/OpenVMS/Fuchsia
-            /(unix)\s?([\w\.]*)/i                                               // UNIX
-            ], [NAME, VERSION]
-        ]
-    };
-
-
-    /////////////////
-    // Constructor
-    ////////////////
-    /*
-    var Browser = function (name, version) {
-        this[NAME] = name;
-        this[VERSION] = version;
-    };
-    var CPU = function (arch) {
-        this[ARCHITECTURE] = arch;
-    };
-    var Device = function (vendor, model, type) {
-        this[VENDOR] = vendor;
-        this[MODEL] = model;
-        this[TYPE] = type;
-    };
-    var Engine = Browser;
-    var OS = Browser;
-    */
-    var UAParser = function (uastring, extensions) {
-
-        if (typeof uastring === 'object') {
-            extensions = uastring;
-            uastring = undefined;
-        }
-
-        if (!(this instanceof UAParser)) {
-            return new UAParser(uastring, extensions).getResult();
-        }
-
-        var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
-        var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
-        //var browser = new Browser();
-        //var cpu = new CPU();
-        //var device = new Device();
-        //var engine = new Engine();
-        //var os = new OS();
-
-        this.getBrowser = function () {
-            var browser = { name: undefined, version: undefined };
-            mapper.rgx.call(browser, ua, rgxmap.browser);
-            browser.major = util.major(browser.version); // deprecated
-            return browser;
-        };
-        this.getCPU = function () {
-            var cpu = { architecture: undefined };
-            mapper.rgx.call(cpu, ua, rgxmap.cpu);
-            return cpu;
-        };
-        this.getDevice = function () {
-            var device = { vendor: undefined, model: undefined, type: undefined };
-            mapper.rgx.call(device, ua, rgxmap.device);
-            return device;
-        };
-        this.getEngine = function () {
-            var engine = { name: undefined, version: undefined };
-            mapper.rgx.call(engine, ua, rgxmap.engine);
-            return engine;
-        };
-        this.getOS = function () {
-            var os = { name: undefined, version: undefined };
-            mapper.rgx.call(os, ua, rgxmap.os);
-            return os;
-        };
-        this.getResult = function () {
-            return {
-                ua      : this.getUA(),
-                browser : this.getBrowser(),
-                engine  : this.getEngine(),
-                os      : this.getOS(),
-                device  : this.getDevice(),
-                cpu     : this.getCPU()
-            };
-        };
-        this.getUA = function () {
-            return ua;
-        };
-        this.setUA = function (uastring) {
-            ua = uastring;
-            //browser = new Browser();
-            //cpu = new CPU();
-            //device = new Device();
-            //engine = new Engine();
-            //os = new OS();
-            return this;
-        };
-        return this;
-    };
-
-    UAParser.VERSION = LIBVERSION;
-    UAParser.BROWSER = {
-        NAME    : NAME,
-        MAJOR   : MAJOR, // deprecated
-        VERSION : VERSION
-    };
-    UAParser.CPU = {
-        ARCHITECTURE : ARCHITECTURE
-    };
-    UAParser.DEVICE = {
-        MODEL   : MODEL,
-        VENDOR  : VENDOR,
-        TYPE    : TYPE,
-        CONSOLE : CONSOLE,
-        MOBILE  : MOBILE,
-        SMARTTV : SMARTTV,
-        TABLET  : TABLET,
-        WEARABLE: WEARABLE,
-        EMBEDDED: EMBEDDED
-    };
-    UAParser.ENGINE = {
-        NAME    : NAME,
-        VERSION : VERSION
-    };
-    UAParser.OS = {
-        NAME    : NAME,
-        VERSION : VERSION
-    };
-    //UAParser.Utils = util;
-
-    ///////////
-    // Export
-    //////////
-
-
-    // check js environment
-    if (typeof(exports) !== UNDEF_TYPE) {
-        // nodejs env
-        if (typeof module !== UNDEF_TYPE && module.exports) {
-            exports = module.exports = UAParser;
-        }
-        // TODO: test!!!!!!!!
-        /*
-        if (require && require.main === module && process) {
-            // cli
-            var jsonize = function (arr) {
-                var res = [];
-                for (var i in arr) {
-                    res.push(new UAParser(arr[i]).getResult());
-                }
-                process.stdout.write(JSON.stringify(res, null, 2) + '\n');
-            };
-            if (process.stdin.isTTY) {
-                // via args
-                jsonize(process.argv.slice(2));
-            } else {
-                // via pipe
-                var str = '';
-                process.stdin.on('readable', function() {
-                    var read = process.stdin.read();
-                    if (read !== null) {
-                        str += read;
-                    }
-                });
-                process.stdin.on('end', function () {
-                    jsonize(str.replace(/\n$/, '').split('\n'));
-                });
-            }
-        }
-        */
-        exports.UAParser = UAParser;
-    } else {
-        // requirejs env (optional)
-        if (typeof(define) === FUNC_TYPE && define.amd) {
-            define(function () {
-                return UAParser;
-            });
-        } else if (window) {
-            // browser env
-            window.UAParser = UAParser;
-        }
-    }
-
-    // jQuery/Zepto specific (optional)
-    // Note:
-    //   In AMD env the global scope should be kept clean, but jQuery is an exception.
-    //   jQuery always exports to global scope, unless jQuery.noConflict(true) is used,
-    //   and we should catch that.
-    var $ = window && (window.jQuery || window.Zepto);
-    if (typeof $ !== UNDEF_TYPE && !$.ua) {
-        var parser = new UAParser();
-        $.ua = parser.getResult();
-        $.ua.get = function () {
-            return parser.getUA();
-        };
-        $.ua.set = function (uastring) {
-            parser.setUA(uastring);
-            var result = parser.getResult();
-            for (var prop in result) {
-                $.ua[prop] = result[prop];
-            }
-        };
-    }
-
-})(typeof window === 'object' ? window : this);
-
-},{}],"../node_modules/stylis/stylis.min.js":[function(require,module,exports) {
-=======
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 var define;
 /*!
  * UAParser.js v0.7.19
@@ -30006,7 +28822,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\nposition: relative;\n/* border:1px solid black; */\nz-index: 1;\n"]);
+  var data = _taggedTemplateLiteral(["\nposition: relative;\n/* border:1px solid black; */\nz-index: 1;\nwidth:100%;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -30362,11 +29178,7 @@ function (_Component) {
 
 var _default = NameAndJobTitle;
 exports.default = _default;
-<<<<<<< HEAD
-},{}],"Slides/WideScreen/HeroSlide/NameReveal.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./NameReveal":"Slides/WideScreen/HeroSlide/NameReveal.js","./TitleReveal":"Slides/WideScreen/HeroSlide/TitleReveal.js"}],"Slides/WideScreen/HeroSlide/AboutMe.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30423,11 +29235,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-<<<<<<< HEAD
-  var data = _taggedTemplateLiteral(["\nposition: relative;\n/* border:1px solid black; */\nz-index: 1;\nwidth:100%;\n"]);
-=======
   var data = _taggedTemplateLiteral(["\n    height: 40vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    position: relative;\n    overflow: hidden;\n"]);
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
   _templateObject = function _templateObject() {
     return data;
@@ -30510,9 +29318,6 @@ function (_Component) {
 
 var _default = AboutMe;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/HeroSlide/TitleReveal.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/HeroSlide/Hero.js":[function(require,module,exports) {
 "use strict";
 
@@ -30573,7 +29378,6 @@ function (_Component) {
 var _default = Hero;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js","./NameAndJobTitle":"Slides/WideScreen/HeroSlide/NameAndJobTitle.js","./AboutMe":"Slides/WideScreen/HeroSlide/AboutMe.js"}],"Slides/WideScreen/WorkSlide/TextContent.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30864,94 +29668,6 @@ TextContent.propTypes = {
   roles: _propTypes.default.array.isRequired,
   refreshToggle: _propTypes.default.bool.isRequired
 };
-<<<<<<< HEAD
-var _default = TitleReveal;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/HeroSlide/NameAndJobTitle.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-var _NameReveal = _interopRequireDefault(require("./NameReveal"));
-
-var _TitleReveal = _interopRequireDefault(require("./TitleReveal"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column nowrap;\n    justify-content: center;\n    align-items: center;\n    height:100vh;\n    width:100%;\n    background-color: white;\n    /* border: 1px solid blue; */\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var Container = _styledComponents.default.div(_templateObject());
-
-var NameAndJobTitle =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(NameAndJobTitle, _Component);
-
-  function NameAndJobTitle() {
-    _classCallCheck(this, NameAndJobTitle);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(NameAndJobTitle).apply(this, arguments));
-  }
-
-  _createClass(NameAndJobTitle, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(Container, null, _react.default.createElement(_NameReveal.default, {
-        text: "Suresh Murali",
-        fontFam: "Valencia",
-        timeDelay: 500
-      }), _react.default.createElement("br", null), _react.default.createElement(_TitleReveal.default, {
-        text: "Front-end Developer & UI/UX Designer",
-        fontFam: "AvenirRoman",
-        timeDelay: 1300
-      }));
-    }
-  }]);
-
-  return NameAndJobTitle;
-}(_react.Component);
-
-var _default = NameAndJobTitle;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./NameReveal":"Slides/WideScreen/HeroSlide/NameReveal.js","./TitleReveal":"Slides/WideScreen/HeroSlide/TitleReveal.js"}],"Slides/WideScreen/HeroSlide/AboutMe.js":[function(require,module,exports) {
-=======
 var _default = TextContent;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Assets/Images/Voistrap/Home.png":[function(require,module,exports) {
@@ -30963,7 +29679,6 @@ module.exports = "/People.c935de5c.png";
 },{}],"Assets/Images/Voistrap/Score.png":[function(require,module,exports) {
 module.exports = "/Score.6469139a.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapImages.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30975,9 +29690,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
-<<<<<<< HEAD
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
-=======
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _Home = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/Home.png"));
@@ -30987,7 +29699,6 @@ var _Meetings = _interopRequireDefault(require("../../../../Assets/Images/Voistr
 var _People = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/People.png"));
 
 var _Score = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/Score.png"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31022,11 +29733,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-<<<<<<< HEAD
-  var data = _taggedTemplateLiteral(["\n  align-items: center;\n  font-family: 'AvenirLight';\n  text-align: left;\n  margin-left: 30%;\n  margin-right: 5%;\n  @media ", " {\n    transform: translateY(87%);\n    font-size: 38px;\n  }\n  @media ", " {\n    transform: translateY(80%);\n    font-size: 70px;\n  }\n"]);
-=======
   var data = _taggedTemplateLiteral(["\ntransition: transform 0.2s ease-out;\nbottom:-75vh;\nleft:2vw;\nposition: absolute;\n/* border: 1px dashed red; */\nheight: 80vh;\nfilter: blur(0.8px);\n"]);
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -31057,13 +29764,7 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-<<<<<<< HEAD
-var Container = _styledComponents.default.section(_templateObject());
-
-var AboutMeTitle = _styledComponents.default.div.attrs({
-=======
 var VoistrapPhoneHome = _styledComponents.default.img.attrs({
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
   style: function style(_ref) {
     var scroll = _ref.scroll;
     return {
@@ -31081,82 +29782,6 @@ var VoistrapPhoneMeetings = _styledComponents.default.img.attrs({
   }
 })(_templateObject2());
 
-<<<<<<< HEAD
-  _createClass(AboutMe, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      window.addEventListener('scroll', this.handleScroll);
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      window.removeEventListener('scroll', this.handleScroll);
-    }
-  }, {
-    key: "handleScroll",
-    value: function handleScroll(event) {
-      var _event$srcElement = event.srcElement,
-          body = _event$srcElement.body,
-          documentElement = _event$srcElement.documentElement;
-      var sd = Math.max(body.scrollTop, documentElement.scrollTop);
-      var sp = sd / (documentElement.scrollHeight - documentElement.clientHeight) * 100;
-      var maxlimit = documentElement.clientHeight * 150 / documentElement.scrollHeight;
-
-      if (sp >= 0 && sp <= maxlimit) {
-        this.setState({
-          scrollPercent: sp
-        });
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var scrollPercent = this.state.scrollPercent;
-      return _react.default.createElement(Container, null, _react.default.createElement(AboutMeTitle, {
-        scrollPercent: scrollPercent
-      }, "ABOUT ME"), _react.default.createElement(AboutMeDescription, null, "Front-end developer who cares deeply about user experience. Serious passion for UI design and new technologies."));
-    }
-  }]);
-
-  return AboutMe;
-}(_react.Component);
-
-var _default = AboutMe;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/HeroSlide/Hero.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _NameAndJobTitle = _interopRequireDefault(require("./NameAndJobTitle"));
-
-var _AboutMe = _interopRequireDefault(require("./AboutMe"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-=======
 var VoistrapPhoneScore = _styledComponents.default.img.attrs({
   style: function style(_ref3) {
     var scroll = _ref3.scroll;
@@ -31165,7 +29790,6 @@ var VoistrapPhoneScore = _styledComponents.default.img.attrs({
     };
   }
 })(_templateObject3());
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 var VoistrapPhonePeople = _styledComponents.default.img.attrs({
   style: function style(_ref4) {
@@ -31223,74 +29847,6 @@ function (_Component) {
   return VoistrapImages;
 }(_react.Component);
 
-<<<<<<< HEAD
-var _default = Hero;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","./NameAndJobTitle":"Slides/WideScreen/HeroSlide/NameAndJobTitle.js","./AboutMe":"Slides/WideScreen/HeroSlide/AboutMe.js"}],"Slides/WideScreen/WorkSlide/TextContent.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireWildcard(require("styled-components"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _templateObject13() {
-  var data = _taggedTemplateLiteral(["\n\n"]);
-
-  _templateObject13 = function _templateObject13() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject12() {
-  var data = _taggedTemplateLiteral(["\ndisplay:", ";\ncolor: #FFF;\nanimation: ", " 0.0001s linear forwards;\nanimation-delay: 0.5s;\nposition: relative;\n\n\n\n&::after{\ncontent:'';\ntop:0;\nleft:0;\nposition:absolute;\nwidth:0%;\nheight:100%;\nbackground: #222;\nanimation: ", " 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;\nanimation-delay:0s;\n}\n"]);
-
-  _templateObject12 = function _templateObject12() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject11() {
-  var data = _taggedTemplateLiteral(["\n"]);
-
-  _templateObject11 = function _templateObject11() {
-    return data;
-  };
-=======
 VoistrapImages.propTypes = {
   boxHeight: _propTypes.default.number.isRequired,
   index: _propTypes.default.number.isRequired,
@@ -31310,7 +29866,6 @@ module.exports = "/AddRestaurant.668a5733.png";
 module.exports = "/AddFood.0e8a8539.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/WhatsMyFoodImages.js":[function(require,module,exports) {
 "use strict";
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -31395,31 +29950,6 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-<<<<<<< HEAD
-var TextContainer = _styledComponents.default.section(_templateObject());
-
-var ProjectName = _styledComponents.default.div(_templateObject2(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var ProjectDesc = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var MyRole = _styledComponents.default.div(_templateObject4(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var ProjectID = _styledComponents.default.div(_templateObject5(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var ProjectType = _styledComponents.default.div(_templateObject6(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var ProjectDetails = _styledComponents.default.div(_templateObject7());
-
-var ProjectDetailsContainer = _styledComponents.default.div(_templateObject8());
-
-var appearText = function appearText() {
-  return (0, _styledComponents.keyframes)(_templateObject9());
-};
-
-var revBlock = function revBlock() {
-  return (0, _styledComponents.keyframes)(_templateObject10());
-};
-=======
 var Restaurant = _styledComponents.default.img.attrs({
   style: function style(_ref) {
     var scroll = _ref.scroll;
@@ -31428,7 +29958,6 @@ var Restaurant = _styledComponents.default.img.attrs({
     };
   }
 })(_templateObject());
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 var Home = _styledComponents.default.img.attrs({
   style: function style(_ref2) {
@@ -31514,23 +30043,11 @@ WhatsMyFoodImages.propTypes = {
 };
 var _default = WhatsMyFoodImages;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Assets/Images/Voistrap/Home.png":[function(require,module,exports) {
-module.exports = "/Home.29168386.png";
-},{}],"Assets/Images/Voistrap/Meetings.png":[function(require,module,exports) {
-module.exports = "/Meetings.5a06b4a3.png";
-},{}],"Assets/Images/Voistrap/People.png":[function(require,module,exports) {
-module.exports = "/People.c935de5c.png";
-},{}],"Assets/Images/Voistrap/Score.png":[function(require,module,exports) {
-module.exports = "/Score.6469139a.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/WhatsMyFood/Home.png":"Assets/Images/WhatsMyFood/Home.png","../../../../Assets/Images/WhatsMyFood/Restaurant.png":"Assets/Images/WhatsMyFood/Restaurant.png","../../../../Assets/Images/WhatsMyFood/AddRestaurant.png":"Assets/Images/WhatsMyFood/AddRestaurant.png","../../../../Assets/Images/WhatsMyFood/AddFood.png":"Assets/Images/WhatsMyFood/AddFood.png"}],"Assets/Images/ComingOrNot/Tablet.png":[function(require,module,exports) {
 module.exports = "/Tablet.3851521b.png";
 },{}],"Assets/Images/ComingOrNot/Iphone.png":[function(require,module,exports) {
 module.exports = "/Iphone.024150c9.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/ComingOrNotImages.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31544,19 +30061,9 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-<<<<<<< HEAD
-var _Home = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/Home.png"));
-
-var _Meetings = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/Meetings.png"));
-
-var _People = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/People.png"));
-
-var _Score = _interopRequireDefault(require("../../../../Assets/Images/Voistrap/Score.png"));
-=======
 var _Tablet = _interopRequireDefault(require("../../../../Assets/Images/ComingOrNot/Tablet.png"));
 
 var _Iphone = _interopRequireDefault(require("../../../../Assets/Images/ComingOrNot/Iphone.png"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31642,11 +30149,7 @@ function (_Component) {
           screenHeight = _this$props.screenHeight;
       var heighttoBeReducedinVH = boxHeight * index - 100;
       var scrollOffset = screenHeight * heighttoBeReducedinVH / 100;
-<<<<<<< HEAD
-      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight;
-=======
       var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight + index - 1;
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
       scrollPercent -= scrollOffsetInPercent;
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(Tablet, {
         src: _Tablet.default,
@@ -31672,17 +30175,6 @@ ComingOrNotImages.propTypes = {
 };
 var _default = ComingOrNotImages;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Voistrap/Home.png":"Assets/Images/Voistrap/Home.png","../../../../Assets/Images/Voistrap/Meetings.png":"Assets/Images/Voistrap/Meetings.png","../../../../Assets/Images/Voistrap/People.png":"Assets/Images/Voistrap/People.png","../../../../Assets/Images/Voistrap/Score.png":"Assets/Images/Voistrap/Score.png"}],"Assets/Images/WhatsMyFood/Home.png":[function(require,module,exports) {
-module.exports = "/Home.acf0346b.png";
-},{}],"Assets/Images/WhatsMyFood/Restaurant.png":[function(require,module,exports) {
-module.exports = "/Restaurant.879d330f.png";
-},{}],"Assets/Images/WhatsMyFood/AddRestaurant.png":[function(require,module,exports) {
-module.exports = "/AddRestaurant.668a5733.png";
-},{}],"Assets/Images/WhatsMyFood/AddFood.png":[function(require,module,exports) {
-module.exports = "/AddFood.0e8a8539.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/WhatsMyFoodImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/ComingOrNot/Tablet.png":"Assets/Images/ComingOrNot/Tablet.png","../../../../Assets/Images/ComingOrNot/Iphone.png":"Assets/Images/ComingOrNot/Iphone.png"}],"Assets/Images/Tesla/Tyre.png":[function(require,module,exports) {
 module.exports = "/Tyre.f04a1585.png";
 },{}],"Assets/Images/Tesla/Heat.png":[function(require,module,exports) {
@@ -31692,7 +30184,6 @@ module.exports = "/Lock.82896f69.png";
 },{}],"Assets/Images/Tesla/Battery.png":[function(require,module,exports) {
 module.exports = "/Battery.0e582a33.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/TeslaImages.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31706,15 +30197,6 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-<<<<<<< HEAD
-var _Home = _interopRequireDefault(require("../../../../Assets/Images/WhatsMyFood/Home.png"));
-
-var _Restaurant = _interopRequireDefault(require("../../../../Assets/Images/WhatsMyFood/Restaurant.png"));
-
-var _AddRestaurant = _interopRequireDefault(require("../../../../Assets/Images/WhatsMyFood/AddRestaurant.png"));
-
-var _AddFood = _interopRequireDefault(require("../../../../Assets/Images/WhatsMyFood/AddFood.png"));
-=======
 var _Tyre = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Tyre.png"));
 
 var _Heat = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Heat.png"));
@@ -31722,7 +30204,6 @@ var _Heat = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Heat
 var _Lock = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Lock.png"));
 
 var _Battery = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Battery.png"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31848,13 +30329,8 @@ function (_Component) {
       var scrollOffset = screenHeight * heighttoBeReducedinVH / 100;
       var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight + index - 1;
       scrollPercent -= scrollOffsetInPercent;
-<<<<<<< HEAD
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(AddFood, {
-        src: _AddFood.default,
-=======
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(Lock, {
         src: _Lock.default,
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
         scroll: scrollPercent,
         alt: "teslaLock"
       }), _react.default.createElement(Battery, {
@@ -31885,13 +30361,6 @@ TeslaImages.propTypes = {
 };
 var _default = TeslaImages;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/WhatsMyFood/Home.png":"Assets/Images/WhatsMyFood/Home.png","../../../../Assets/Images/WhatsMyFood/Restaurant.png":"Assets/Images/WhatsMyFood/Restaurant.png","../../../../Assets/Images/WhatsMyFood/AddRestaurant.png":"Assets/Images/WhatsMyFood/AddRestaurant.png","../../../../Assets/Images/WhatsMyFood/AddFood.png":"Assets/Images/WhatsMyFood/AddFood.png"}],"Assets/Images/ComingOrNot/Tablet.png":[function(require,module,exports) {
-module.exports = "/Tablet.3851521b.png";
-},{}],"Assets/Images/ComingOrNot/Iphone.png":[function(require,module,exports) {
-module.exports = "/Iphone.024150c9.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/ComingOrNotImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Tesla/Tyre.png":"Assets/Images/Tesla/Tyre.png","../../../../Assets/Images/Tesla/Heat.png":"Assets/Images/Tesla/Heat.png","../../../../Assets/Images/Tesla/Lock.png":"Assets/Images/Tesla/Lock.png","../../../../Assets/Images/Tesla/Battery.png":"Assets/Images/Tesla/Battery.png"}],"Assets/Images/Kosen/EnglishHome.png":[function(require,module,exports) {
 module.exports = "/EnglishHome.6564ba02.png";
 },{}],"Assets/Images/Kosen/JpnHome.png":[function(require,module,exports) {
@@ -31899,7 +30368,6 @@ module.exports = "/JpnHome.05334996.png";
 },{}],"Assets/Images/Kosen/Player.png":[function(require,module,exports) {
 module.exports = "/Player.faa20486.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/KosenImages.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31913,17 +30381,11 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-<<<<<<< HEAD
-var _Tablet = _interopRequireDefault(require("../../../../Assets/Images/ComingOrNot/Tablet.png"));
-
-var _Iphone = _interopRequireDefault(require("../../../../Assets/Images/ComingOrNot/Iphone.png"));
-=======
 var _EnglishHome = _interopRequireDefault(require("../../../../Assets/Images/Kosen/EnglishHome.png"));
 
 var _JpnHome = _interopRequireDefault(require("../../../../Assets/Images/Kosen/JpnHome.png"));
 
 var _Player = _interopRequireDefault(require("../../../../Assets/Images/Kosen/Player.png"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32058,17 +30520,6 @@ KosenImages.propTypes = {
 };
 var _default = KosenImages;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/ComingOrNot/Tablet.png":"Assets/Images/ComingOrNot/Tablet.png","../../../../Assets/Images/ComingOrNot/Iphone.png":"Assets/Images/ComingOrNot/Iphone.png"}],"Assets/Images/Tesla/Tyre.png":[function(require,module,exports) {
-module.exports = "/Tyre.f04a1585.png";
-},{}],"Assets/Images/Tesla/Heat.png":[function(require,module,exports) {
-module.exports = "/Heat.1692c848.png";
-},{}],"Assets/Images/Tesla/Lock.png":[function(require,module,exports) {
-module.exports = "/Lock.82896f69.png";
-},{}],"Assets/Images/Tesla/Battery.png":[function(require,module,exports) {
-module.exports = "/Battery.0e582a33.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/TeslaImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Kosen/EnglishHome.png":"Assets/Images/Kosen/EnglishHome.png","../../../../Assets/Images/Kosen/JpnHome.png":"Assets/Images/Kosen/JpnHome.png","../../../../Assets/Images/Kosen/Player.png":"Assets/Images/Kosen/Player.png"}],"Assets/Images/Showcase/Dots.png":[function(require,module,exports) {
 module.exports = "/Dots.b481a8f1.png";
 },{}],"Assets/Images/Showcase/Bubble.png":[function(require,module,exports) {
@@ -32078,7 +30529,6 @@ module.exports = "/Paths.faabbc38.png";
 },{}],"Assets/Images/Showcase/BigBubble.png":[function(require,module,exports) {
 module.exports = "/BigBubble.05d71ef5.png";
 },{}],"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapWebImages.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32092,15 +30542,6 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-<<<<<<< HEAD
-var _Tyre = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Tyre.png"));
-
-var _Heat = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Heat.png"));
-
-var _Lock = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Lock.png"));
-
-var _Battery = _interopRequireDefault(require("../../../../Assets/Images/Tesla/Battery.png"));
-=======
 var _Dots = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Dots.png"));
 
 var _Bubble = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Bubble.png"));
@@ -32108,7 +30549,6 @@ var _Bubble = _interopRequireDefault(require("../../../../Assets/Images/Showcase
 var _Paths = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Paths.png"));
 
 var _BigBubble = _interopRequireDefault(require("../../../../Assets/Images/Showcase/BigBubble.png"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32266,17 +30706,7 @@ VoistrapWebImages.propTypes = {
 };
 var _default = VoistrapWebImages;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Tesla/Tyre.png":"Assets/Images/Tesla/Tyre.png","../../../../Assets/Images/Tesla/Heat.png":"Assets/Images/Tesla/Heat.png","../../../../Assets/Images/Tesla/Lock.png":"Assets/Images/Tesla/Lock.png","../../../../Assets/Images/Tesla/Battery.png":"Assets/Images/Tesla/Battery.png"}],"Assets/Images/Kosen/EnglishHome.png":[function(require,module,exports) {
-module.exports = "/EnglishHome.6564ba02.png";
-},{}],"Assets/Images/Kosen/JpnHome.png":[function(require,module,exports) {
-module.exports = "/JpnHome.05334996.png";
-},{}],"Assets/Images/Kosen/Player.png":[function(require,module,exports) {
-module.exports = "/Player.faa20486.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/KosenImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Showcase/Dots.png":"Assets/Images/Showcase/Dots.png","../../../../Assets/Images/Showcase/Bubble.png":"Assets/Images/Showcase/Bubble.png","../../../../Assets/Images/Showcase/Paths.png":"Assets/Images/Showcase/Paths.png","../../../../Assets/Images/Showcase/BigBubble.png":"Assets/Images/Showcase/BigBubble.png"}],"Slides/WideScreen/WorkSlide/ImageContent.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32290,13 +30720,6 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-<<<<<<< HEAD
-var _EnglishHome = _interopRequireDefault(require("../../../../Assets/Images/Kosen/EnglishHome.png"));
-
-var _JpnHome = _interopRequireDefault(require("../../../../Assets/Images/Kosen/JpnHome.png"));
-
-var _Player = _interopRequireDefault(require("../../../../Assets/Images/Kosen/Player.png"));
-=======
 var _VoistrapImages = _interopRequireDefault(require("./ParallaxImages/VoistrapImages"));
 
 var _WhatsMyFoodImages = _interopRequireDefault(require("./ParallaxImages/WhatsMyFoodImages"));
@@ -32308,7 +30731,6 @@ var _TeslaImages = _interopRequireDefault(require("./ParallaxImages/TeslaImages"
 var _KosenImages = _interopRequireDefault(require("./ParallaxImages/KosenImages"));
 
 var _VoistrapWebImages = _interopRequireDefault(require("./ParallaxImages/VoistrapWebImages"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32368,34 +30790,6 @@ function (_Component) {
 
     _classCallCheck(this, ImageContent);
 
-<<<<<<< HEAD
-  _createClass(KosenImages, [{
-    key: "render",
-    value: function render() {
-      var scrollPercent = this.props.scrollPercent;
-      var _this$props = this.props,
-          boxHeight = _this$props.boxHeight,
-          index = _this$props.index,
-          scrollHeight = _this$props.scrollHeight,
-          screenHeight = _this$props.screenHeight;
-      var heighttoBeReducedinVH = boxHeight * index - 100;
-      var scrollOffset = screenHeight * heighttoBeReducedinVH / 100;
-      var scrollOffsetInPercent = scrollOffset * 100 / scrollHeight;
-      scrollPercent -= scrollOffsetInPercent;
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(PlayerTab, {
-        src: _Player.default,
-        scroll: scrollPercent,
-        alt: "kosenPlayer"
-      }), _react.default.createElement(EnglishTab, {
-        src: _EnglishHome.default,
-        scroll: scrollPercent,
-        alt: "kosenEnglish"
-      }), _react.default.createElement(JapaneseTab, {
-        src: _JpnHome.default,
-        scroll: scrollPercent,
-        alt: "kosenJapanese"
-      }));
-=======
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ImageContent).call(this, props));
     _this.state = {
       screenHeight: 0,
@@ -32497,7 +30891,6 @@ function (_Component) {
         screenHeight: screenHeight,
         scrollHeight: scrollHeight
       })));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
     }
   }]);
 
@@ -32509,19 +30902,7 @@ ImageContent.propTypes = {
 };
 var _default = ImageContent;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Kosen/EnglishHome.png":"Assets/Images/Kosen/EnglishHome.png","../../../../Assets/Images/Kosen/JpnHome.png":"Assets/Images/Kosen/JpnHome.png","../../../../Assets/Images/Kosen/Player.png":"Assets/Images/Kosen/Player.png"}],"Assets/Images/Showcase/Dots.png":[function(require,module,exports) {
-module.exports = "/Dots.b481a8f1.png";
-},{}],"Assets/Images/Showcase/Bubble.png":[function(require,module,exports) {
-module.exports = "/Bubble.6a009001.png";
-},{}],"Assets/Images/Showcase/Paths.png":[function(require,module,exports) {
-module.exports = "/Paths.faabbc38.png";
-},{}],"Assets/Images/Showcase/BigBubble.png":[function(require,module,exports) {
-module.exports = "/BigBubble.05d71ef5.png";
-},{}],"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapWebImages.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","./ParallaxImages/VoistrapImages":"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapImages.js","./ParallaxImages/WhatsMyFoodImages":"Slides/WideScreen/WorkSlide/ParallaxImages/WhatsMyFoodImages.js","./ParallaxImages/ComingOrNotImages":"Slides/WideScreen/WorkSlide/ParallaxImages/ComingOrNotImages.js","./ParallaxImages/TeslaImages":"Slides/WideScreen/WorkSlide/ParallaxImages/TeslaImages.js","./ParallaxImages/KosenImages":"Slides/WideScreen/WorkSlide/ParallaxImages/KosenImages.js","./ParallaxImages/VoistrapWebImages":"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapWebImages.js"}],"Slides/WideScreen/WorkSlide/Work.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32533,21 +30914,9 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
-<<<<<<< HEAD
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _Dots = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Dots.png"));
-
-var _Bubble = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Bubble.png"));
-
-var _Paths = _interopRequireDefault(require("../../../../Assets/Images/Showcase/Paths.png"));
-
-var _BigBubble = _interopRequireDefault(require("../../../../Assets/Images/Showcase/BigBubble.png"));
-=======
 var _TextContent = _interopRequireDefault(require("./TextContent"));
 
 var _ImageContent = _interopRequireDefault(require("./ImageContent"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32726,11 +31095,7 @@ function (_Component) {
 
 var _default = Work;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../../Assets/Images/Showcase/Dots.png":"Assets/Images/Showcase/Dots.png","../../../../Assets/Images/Showcase/Bubble.png":"Assets/Images/Showcase/Bubble.png","../../../../Assets/Images/Showcase/Paths.png":"Assets/Images/Showcase/Paths.png","../../../../Assets/Images/Showcase/BigBubble.png":"Assets/Images/Showcase/BigBubble.png"}],"Slides/WideScreen/WorkSlide/ImageContent.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./TextContent":"Slides/WideScreen/WorkSlide/TextContent.js","./ImageContent":"Slides/WideScreen/WorkSlide/ImageContent.js"}],"Slides/WideScreen/Skills.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32871,7 +31236,7 @@ function (_Component) {
       var scrollPercent = this.state.scrollPercent;
       return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, {
         scrollPercent: scrollPercent
-      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null))));
+      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
     }
   }]);
 
@@ -32962,7 +31327,7 @@ function (_React$Component) {
     value: function notifySlack() {
       var alternate = this.props.alternate;
       console.log(alternate);
-      fetch("https://hooks.slack.com/services/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", {
+      fetch(undefined, {
         credentials: 'omit',
         method: 'POST',
         body: JSON.stringify({
@@ -32999,11 +31364,7 @@ SocialLogo.propTypes = {
 };
 var _default = SocialLogo;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","./ParallaxImages/VoistrapImages":"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapImages.js","./ParallaxImages/WhatsMyFoodImages":"Slides/WideScreen/WorkSlide/ParallaxImages/WhatsMyFoodImages.js","./ParallaxImages/ComingOrNotImages":"Slides/WideScreen/WorkSlide/ParallaxImages/ComingOrNotImages.js","./ParallaxImages/TeslaImages":"Slides/WideScreen/WorkSlide/ParallaxImages/TeslaImages.js","./ParallaxImages/KosenImages":"Slides/WideScreen/WorkSlide/ParallaxImages/KosenImages.js","./ParallaxImages/VoistrapWebImages":"Slides/WideScreen/WorkSlide/ParallaxImages/VoistrapWebImages.js"}],"Slides/WideScreen/WorkSlide/Work.js":[function(require,module,exports) {
-=======
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/ContactSlide/Contact.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33025,17 +31386,11 @@ var _insta = _interopRequireDefault(require("../../../Assets/Images/Social/insta
 
 var _dribbble = _interopRequireDefault(require("../../../Assets/Images/Social/dribbble.svg"));
 
-<<<<<<< HEAD
-var _TextContent = _interopRequireDefault(require("./TextContent"));
-
-var _ImageContent = _interopRequireDefault(require("./ImageContent"));
-=======
 var _linkedin = _interopRequireDefault(require("../../../Assets/Images/Social/linkedin.svg"));
 
 var _SocialLogo = _interopRequireDefault(require("./SocialLogo"));
 
 var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33121,58 +31476,6 @@ function (_Component) {
       scrollPercent: 0
     };
     _this.handleScroll = _this.handleScroll.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-<<<<<<< HEAD
-    _this.workDetails = [{
-      number: '',
-      projectName: '',
-      projectDesc: '',
-      projectType: '',
-      roles: ['']
-    }, {
-      number: '01',
-      projectName: 'Voistrap',
-      projectDesc: 'IoT project to give workplace insights using indoor localization, voice and schedule.',
-      projectType: 'iOS APP',
-      roles: ['Full Stack Developer', 'UI Designer']
-    }, {
-      number: '02',
-      projectName: 'WhatsMyFood',
-      projectDesc: 'iOS app to remember your fav food at each restaurant you eat.',
-      projectType: 'iOS APP',
-      roles: ['Front-end Developer', 'UI Designer']
-    }, {
-      number: '03',
-      projectName: 'ComingOrNot',
-      projectDesc: 'Event planner web app that strives to ease the work of an organizer, conduct events in a less chaotic way.',
-      projectType: 'WEB APP',
-      roles: ['Front-end Developer', 'UI Designer']
-    }, {
-      number: '04',
-      projectName: 'Tesla app',
-      projectDesc: 'iOS app concept to control Tesla cars remotely.',
-      projectType: 'iOS APP CONCEPT',
-      roles: ['UI Designer']
-    }, {
-      number: '05',
-      projectName: 'Video portal',
-      projectDesc: 'Internal video portal to deliver news to employees all over the world.',
-      projectType: 'WEB APP',
-      roles: ['Full Stack Developer', 'UI Designer']
-    }, {
-      number: '06',
-      projectName: 'Voistrap demo',
-      projectDesc: 'Web app project to give workplace insights using indoor localization, voice and schedule.',
-      projectType: 'WEB APP',
-      roles: ['Full Stack Developer', 'UI Designer']
-    }, {
-      number: '',
-      projectName: '',
-      projectDesc: '',
-      projectType: '',
-      roles: ['']
-    }];
-=======
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
     return _this;
   }
 
@@ -33248,507 +31551,8 @@ function (_Component) {
 
 var _default = Contact;
 exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./TextContent":"Slides/WideScreen/WorkSlide/TextContent.js","./ImageContent":"Slides/WideScreen/WorkSlide/ImageContent.js"}],"Slides/WideScreen/Skills.js":[function(require,module,exports) {
-=======
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/WideScreen/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/Mobile/HeroSlide/NameAndJobTitle.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-<<<<<<< HEAD
-var _breakpoints = _interopRequireDefault(require("../../Assets/Responsive/breakpoints"));
-=======
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _templateObject3() {
-<<<<<<< HEAD
-  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid #EFEFEF; */\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: space-between;\n  align-items: center;\n  font-family: 'AvenirRoman';\n  text-align: left;\n  margin-left: 15%;\n  margin-right: 10%;\n  z-index: 1;\n  transform: translateY(30%);\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
-=======
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  text-align:center;\n  margin-top: 10px;\n  @media ", " {\n    font-size: 13px;\n  }\n  @media ", " {\n    font-size: 15px;\n  }\n  @media ", " {\n    font-size: 17px;\n  }\n  @media ", " {\n    font-size: 20px;\n  }\n"]);
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'Valencia';\n  text-align:center;\n  padding-right: 10px;\n  @media ", " {\n    font-size: 70px;\n  }\n  @media ", " {\n    font-size: 80px;\n  }\n  @media ", " {\n    font-size: 90px;\n  }\n  @media ", " {\n    font-size: 100px;\n  }\n"]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column nowrap;\n    justify-content: center;\n    align-items: center;\n    height:50vh;\n    width:100%;\n    background-color: white;\n    /* border: 1px solid blue; */\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var Container = _styledComponents.default.section(_templateObject());
-
-var Name = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
-
-var Title = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
-
-var NameAndJobTitle =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(NameAndJobTitle, _Component);
-
-  function NameAndJobTitle() {
-    _classCallCheck(this, NameAndJobTitle);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(NameAndJobTitle).apply(this, arguments));
-  }
-
-  _createClass(NameAndJobTitle, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(Container, null, _react.default.createElement(Name, null, "Suresh Murali"), _react.default.createElement(Title, null, "FRONT-END DEVELOPER & UI/UX DESIGNER"));
-    }
-  }]);
-
-  return NameAndJobTitle;
-}(_react.Component);
-
-var _default = NameAndJobTitle;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/Mobile/HeroSlide/AboutMe.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  font-size: 24px;\n  text-align: center;\n  @media ", " {\n    padding: 30px;\n    font-size: 20px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 23px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 24px;\n  }\n  @media ", " {\n    padding: 80px;\n    font-size: 30px;\n  }\n"]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 50vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var Container = _styledComponents.default.section(_templateObject());
-
-var AboutMeDescription = _styledComponents.default.span(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
-
-var AboutMe =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(AboutMe, _Component);
-
-  function AboutMe() {
-    _classCallCheck(this, AboutMe);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(AboutMe).apply(this, arguments));
-  }
-
-  _createClass(AboutMe, [{
-    key: "render",
-    value: function render() {
-<<<<<<< HEAD
-      var scrollPercent = this.state.scrollPercent;
-      return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, {
-        scrollPercent: scrollPercent
-      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
-=======
-      return _react.default.createElement(Container, null, _react.default.createElement(AboutMeDescription, null, "Front-end developer who cares deeply about user experience. Serious passion for UI design and new technologies."));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-    }
-  }]);
-
-  return AboutMe;
-}(_react.Component);
-
-var _default = AboutMe;
-exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Assets/Images/Social/twitter.svg":[function(require,module,exports) {
-module.exports = "/twitter.920364fd.svg";
-},{}],"Assets/Images/Social/git.svg":[function(require,module,exports) {
-module.exports = "/git.1a000b88.svg";
-},{}],"Assets/Images/Social/mail.svg":[function(require,module,exports) {
-module.exports = "/mail.00c836f6.svg";
-},{}],"Assets/Images/Social/insta.svg":[function(require,module,exports) {
-module.exports = "/insta.54ac694c.svg";
-},{}],"Assets/Images/Social/dribbble.svg":[function(require,module,exports) {
-module.exports = "/dribbble.72bc2d7b.svg";
-},{}],"Assets/Images/Social/linkedin.svg":[function(require,module,exports) {
-module.exports = "/linkedin.a58775df.svg";
-},{}],"Slides/WideScreen/ContactSlide/SocialLogo.js":[function(require,module,exports) {
-=======
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/Mobile/HeroSlide/Hero.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _NameAndJobTitle = _interopRequireDefault(require("./NameAndJobTitle"));
-
-<<<<<<< HEAD
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
-=======
-var _AboutMe = _interopRequireDefault(require("./AboutMe"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-<<<<<<< HEAD
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n/* border: 1px solid black; */\n@media ", " {\n    height: 90px;\n    width: 90px;\n  }\n  @media ", " {\n    height: 180px;\n    width: 180px;\n  }\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var LogoImage = _styledComponents.default.img(_templateObject(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
-
-var SocialLogo =
-=======
-var Hero =
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Hero, _Component);
-
-<<<<<<< HEAD
-  function SocialLogo(props) {
-    var _this;
-
-    _classCallCheck(this, SocialLogo);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SocialLogo).call(this, props));
-    _this.notifySlack = _this.notifySlack.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
-  }
-
-  _createClass(SocialLogo, [{
-    key: "notifySlack",
-    value: function notifySlack() {
-      var alternate = this.props.alternate;
-      console.log(alternate);
-      fetch(undefined, {
-        credentials: 'omit',
-        method: 'POST',
-        body: JSON.stringify({
-          text: "\uD83D\uDE80 ".concat(alternate)
-        })
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          imgURL = _this$props.imgURL,
-          alternate = _this$props.alternate,
-          redirectURL = _this$props.redirectURL;
-      return _react.default.createElement("a", {
-        href: redirectURL,
-        onClick: this.notifySlack,
-        target: "_blank",
-        rel: "noopener noreferrer"
-      }, _react.default.createElement(LogoImage, {
-        src: imgURL,
-        alt: alternate
-      }));
-=======
-  function Hero() {
-    _classCallCheck(this, Hero);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Hero).apply(this, arguments));
-  }
-
-  _createClass(Hero, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_NameAndJobTitle.default, null), _react.default.createElement(_AboutMe.default, null));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-    }
-  }]);
-
-  return Hero;
-}(_react.Component);
-
-var _default = Hero;
-exports.default = _default;
-<<<<<<< HEAD
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/WideScreen/ContactSlide/Contact.js":[function(require,module,exports) {
-=======
-},{"react":"../node_modules/react/index.js","./NameAndJobTitle":"Slides/Mobile/HeroSlide/NameAndJobTitle.js","./AboutMe":"Slides/Mobile/HeroSlide/AboutMe.js"}],"Slides/Mobile/Skills.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-<<<<<<< HEAD
-var _twitter = _interopRequireDefault(require("../../../Assets/Images/Social/twitter.svg"));
-
-var _git = _interopRequireDefault(require("../../../Assets/Images/Social/git.svg"));
-
-var _mail = _interopRequireDefault(require("../../../Assets/Images/Social/mail.svg"));
-
-var _insta = _interopRequireDefault(require("../../../Assets/Images/Social/insta.svg"));
-
-var _dribbble = _interopRequireDefault(require("../../../Assets/Images/Social/dribbble.svg"));
-
-var _linkedin = _interopRequireDefault(require("../../../Assets/Images/Social/linkedin.svg"));
-
-var _SocialLogo = _interopRequireDefault(require("./SocialLogo"));
-
-var _breakpoints = _interopRequireDefault(require("../../../Assets/Responsive/breakpoints"));
-=======
-var _breakpoints = _interopRequireDefault(require("../../Assets/Responsive/breakpoints"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  z-index: 1;\n  \n  @media ", " {\n    margin-top: 20px;\n    font-size: 20px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 23px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 25px;\n  }\n  @media ", " {\n    margin-top: 30px;\n    font-size: 30px;\n  }\n"]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #333;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-<<<<<<< HEAD
-var Container = _styledComponents.default.section(_templateObject());
-=======
-var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-
-var SkillsTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
-
-var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
-
-var Skills =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Skills, _Component);
-
-  function Skills() {
-    _classCallCheck(this, Skills);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Skills).apply(this, arguments));
-  }
-
-  _createClass(Skills, [{
-    key: "render",
-    value: function render() {
-<<<<<<< HEAD
-      var scrollPercent = this.state.scrollPercent;
-      return _react.default.createElement(Container, null, _react.default.createElement(ContactTitle, {
-        scrollPercent: scrollPercent
-      }, "CONTACT"), _react.default.createElement(SocialMediaIcons, null, _react.default.createElement(_SocialLogo.default, {
-        imgURL: _twitter.default,
-        alternate: "Twitter",
-        redirectURL: "https://twitter.com/sureshmurali29"
-      }), _react.default.createElement(_SocialLogo.default, {
-        imgURL: _git.default,
-        alternate: "Github",
-        redirectURL: "https://github.com/sureshmurali"
-      }), _react.default.createElement(_SocialLogo.default, {
-        imgURL: _mail.default,
-        alternate: "Mail",
-        redirectURL: "mailto:sureshmurali29@gmail.com"
-      }), _react.default.createElement(_SocialLogo.default, {
-        imgURL: _insta.default,
-        alternate: "Instagram",
-        redirectURL: "https://www.instagram.com/suresh_murali/"
-      }), _react.default.createElement(_SocialLogo.default, {
-        imgURL: _dribbble.default,
-        alternate: "Dribbble",
-        redirectURL: "https://dribbble.com/sureshmurali29"
-      }), _react.default.createElement(_SocialLogo.default, {
-        imgURL: _linkedin.default,
-        alternate: "Linkedin",
-        redirectURL: "https://www.linkedin.com/in/sureshmurali29"
-      })));
-=======
-      return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, null, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null), _react.default.createElement("br", null), "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
-    }
-  }]);
-
-  return Skills;
-}(_react.Component);
-
-var _default = Skills;
-exports.default = _default;
-<<<<<<< HEAD
 },{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/WideScreen/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/Mobile/HeroSlide/NameAndJobTitle.js":[function(require,module,exports) {
 "use strict";
-=======
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -34341,7 +32145,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"../node_modules/parcel-bundler/lib/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -34376,12 +32180,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/lib/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
+},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/lib/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
@@ -34395,7 +32199,6 @@ var _styledComponents = require("styled-components");
 var _reactResponsive = _interopRequireDefault(require("react-responsive"));
 
 var _Hero = _interopRequireDefault(require("./Slides/WideScreen/HeroSlide/Hero"));
-<<<<<<< HEAD
 
 var _Work = _interopRequireDefault(require("./Slides/WideScreen/WorkSlide/Work"));
 
@@ -34408,18 +32211,6 @@ var _Hero2 = _interopRequireDefault(require("./Slides/Mobile/HeroSlide/Hero"));
 var _Skills2 = _interopRequireDefault(require("./Slides/Mobile/Skills"));
 
 var _Contact2 = _interopRequireDefault(require("./Slides/Mobile/ContactSlide/Contact"));
-=======
-
-var _Work = _interopRequireDefault(require("./Slides/WideScreen/WorkSlide/Work"));
-
-var _Skills = _interopRequireDefault(require("./Slides/WideScreen/Skills"));
-
-var _Contact = _interopRequireDefault(require("./Slides/WideScreen/ContactSlide/Contact"));
-
-var _Hero2 = _interopRequireDefault(require("./Slides/Mobile/HeroSlide/Hero"));
-
-var _Skills2 = _interopRequireDefault(require("./Slides/Mobile/Skills"));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
 require("./Assets/index.css");
 
@@ -34477,20 +32268,12 @@ function (_Component) {
         window.history.scrollRestoration = 'manual';
       }
 
-<<<<<<< HEAD
       fetch(undefined).then(function (data) {
-=======
-      fetch("https://ipinfo.io/json").then(function (data) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
         return data.json();
       }).then(function (ipInfo) {
         var ua = (0, _uaParserJs.default)(navigator.userAgent);
         var message = "".concat(ipInfo.region, ", ").concat(ipInfo.city, "\n         \u2022 ").concat(ua.browser.name, " ").concat(ua.browser.version, "\n         \u2022 ").concat(ua.os.name, " ").concat(ua.os.version, "\n         \u2022 ").concat(ipInfo.org);
-<<<<<<< HEAD
         fetch(undefined, {
-=======
-        fetch("https://hooks.slack.com/services/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", {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
           credentials: 'omit',
           method: 'POST',
           body: JSON.stringify({
@@ -34506,11 +32289,7 @@ function (_Component) {
         query: "(min-device-width: 1224px)"
       }, _react.default.createElement(_Hero.default, null), _react.default.createElement(_Work.default, null), _react.default.createElement(_Skills.default, null), _react.default.createElement(_Contact.default, null)), _react.default.createElement(_reactResponsive.default, {
         query: "(max-device-width: 1224px)"
-<<<<<<< HEAD
       }, _react.default.createElement(_Hero2.default, null), _react.default.createElement(_Skills2.default, null), _react.default.createElement(_Contact2.default, null)), _react.default.createElement(GlobalStyle, null));
-=======
-      }, _react.default.createElement(_Hero2.default, null), _react.default.createElement(_Skills2.default, null)), _react.default.createElement(GlobalStyle, null));
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
     }
   }]);
 
@@ -34518,11 +32297,7 @@ function (_Component) {
 }(_react.Component);
 
 (0, _reactDom.render)(_react.default.createElement(App), document.getElementById('root'));
-<<<<<<< HEAD
 },{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Slides/Mobile/ContactSlide/Contact":"Slides/Mobile/ContactSlide/Contact.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js":[function(require,module,exports) {
-=======
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -34549,11 +32324,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-<<<<<<< HEAD
   var ws = new WebSocket(protocol + '://' + hostname + ':' + "53472" + '/');
-=======
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50410" + '/');
->>>>>>> 2f0fd7c2abde6ef6013b92a78fe33b1df7b7cb7d
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -34695,5 +32466,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","App.js"], null)
+},{}]},{},["../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js","App.js"], null)
 //# sourceMappingURL=/App.d36a57b6.map
