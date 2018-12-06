@@ -298,7 +298,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 },{"./lib/ReactPropTypesSecret":"../node_modules/prop-types/lib/ReactPropTypesSecret.js"}],"../node_modules/react/cjs/react.development.js":[function(require,module,exports) {
-/** @license React v16.6.0
+/** @license React v16.6.1
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -317,7 +317,7 @@ if ("development" !== "production") {
     var checkPropTypes = require('prop-types/checkPropTypes'); // TODO: this is special because it gets imported during build.
 
 
-    var ReactVersion = '16.6.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+    var ReactVersion = '16.6.3'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
     // nor polyfill, then a plain number is used for performance.
 
     var hasSymbol = typeof Symbol === 'function' && Symbol.for;
@@ -349,6 +349,25 @@ if ("development" !== "production") {
 
       return null;
     }
+
+    var enableHooks = false; // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+    // In some cases, StrictMode should also double-render lifecycles.
+    // This can be confusing for tests though,
+    // And it can be bad for performance in production.
+    // This feature flag can be used to control the behavior:
+    // To preserve the "Pause on caught exceptions" behavior of the debugger, we
+    // replay the begin phase of a failed component inside invokeGuardedCallback.
+    // Warn about deprecated, async-unsafe lifecycles; relates to RFC #6:
+    // Gather advanced timing metrics for Profiler subtrees.
+    // Trace which interactions trigger each commit.
+    // Only used in www builds.
+    // Only used in www builds.
+    // React Fire: prevent the value and checked attributes from syncing
+    // with their related DOM properties
+    // These APIs will no longer be "unstable" in the upcoming 16.7 release,
+    // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
+
+    var enableStableConcurrentModeAPIs = false;
     /**
      * Use invariant() to assert state which your program assumes to be true.
      *
@@ -359,7 +378,6 @@ if ("development" !== "production") {
      * The invariant message will be stripped in production, but the invariant
      * will remain to ensure logic does not differ in production.
      */
-
 
     var validateFormat = function () {};
 
@@ -479,61 +497,13 @@ if ("development" !== "production") {
         }
 
         if (typeof console !== 'undefined') {
-          var _args$map = args.map(function (item) {
+          var argsWithFormat = args.map(function (item) {
             return '' + item;
-          }),
-              a = _args$map[0],
-              b = _args$map[1],
-              c = _args$map[2],
-              d = _args$map[3],
-              e = _args$map[4],
-              f = _args$map[5],
-              g = _args$map[6],
-              h = _args$map[7];
+          });
+          argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
+          // breaks IE9: https://github.com/facebook/react/issues/13610
 
-          var message = 'Warning: ' + format; // We intentionally don't use spread (or .apply) because it breaks IE9:
-          // https://github.com/facebook/react/issues/13610
-
-          switch (args.length) {
-            case 0:
-              console.error(message);
-              break;
-
-            case 1:
-              console.error(message, a);
-              break;
-
-            case 2:
-              console.error(message, a, b);
-              break;
-
-            case 3:
-              console.error(message, a, b, c);
-              break;
-
-            case 4:
-              console.error(message, a, b, c, d);
-              break;
-
-            case 5:
-              console.error(message, a, b, c, d, e);
-              break;
-
-            case 6:
-              console.error(message, a, b, c, d, e, f);
-              break;
-
-            case 7:
-              console.error(message, a, b, c, d, e, f, g);
-              break;
-
-            case 8:
-              console.error(message, a, b, c, d, e, f, g, h);
-              break;
-
-            default:
-              throw new Error('warningWithoutStack() currently supports at most 8 arguments.');
-          }
+          Function.prototype.apply.call(console.error, console, argsWithFormat);
         }
 
         try {
@@ -541,12 +511,10 @@ if ("development" !== "production") {
           // This error was thrown as a convenience so that you can use this stack
           // to find the callsite that caused this warning to fire.
           var argIndex = 0;
-
-          var _message = 'Warning: ' + format.replace(/%s/g, function () {
+          var message = 'Warning: ' + format.replace(/%s/g, function () {
             return args[argIndex++];
           });
-
-          throw new Error(_message);
+          throw new Error(message);
         } catch (x) {}
       };
     }
@@ -1637,6 +1605,9 @@ if ("development" !== "production") {
         // Secondary renderers store their context values on separate fields.
         _currentValue: defaultValue,
         _currentValue2: defaultValue,
+        // Used to track how many concurrent renderers this context currently
+        // supports within in a single renderer. Such as parallel server rendering.
+        _threadCount: 0,
         // These are circular
         Provider: null,
         Consumer: null
@@ -1687,6 +1658,14 @@ if ("development" !== "production") {
               context._currentValue2 = _currentValue2;
             }
           },
+          _threadCount: {
+            get: function () {
+              return context._threadCount;
+            },
+            set: function (_threadCount) {
+              context._threadCount = _threadCount;
+            }
+          },
           Consumer: {
             get: function () {
               if (!hasWarnedAboutUsingNestedContextConsumers) {
@@ -1720,7 +1699,9 @@ if ("development" !== "production") {
 
     function forwardRef(render) {
       {
-        if (typeof render !== 'function') {
+        if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
+          warningWithoutStack$1(false, 'forwardRef requires a render function but received a `memo` ' + 'component. Instead of forwardRef(memo(...)), use ' + 'memo(forwardRef(...)).');
+        } else if (typeof render !== 'function') {
           warningWithoutStack$1(false, 'forwardRef requires a render function but was given %s.', render === null ? 'null' : typeof render);
         } else {
           !( // Do not warn for 0 arguments because it could be due to usage of the 'arguments' object
@@ -1753,6 +1734,75 @@ if ("development" !== "production") {
         type: type,
         compare: compare === undefined ? null : compare
       };
+    }
+
+    function resolveDispatcher() {
+      var dispatcher = ReactCurrentOwner.currentDispatcher;
+      !(dispatcher !== null) ? invariant(false, 'Hooks can only be called inside the body of a function component.') : void 0;
+      return dispatcher;
+    }
+
+    function useContext(Context, observedBits) {
+      var dispatcher = resolveDispatcher();
+      {
+        // TODO: add a more generic warning for invalid values.
+        if (Context._context !== undefined) {
+          var realContext = Context._context; // Don't deduplicate because this legitimately causes bugs
+          // and nobody should be using this in existing code.
+
+          if (realContext.Consumer === Context) {
+            warning$1(false, 'Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be ' + 'removed in a future major release. Did you mean to call useContext(Context) instead?');
+          } else if (realContext.Provider === Context) {
+            warning$1(false, 'Calling useContext(Context.Provider) is not supported. ' + 'Did you mean to call useContext(Context) instead?');
+          }
+        }
+      }
+      return dispatcher.useContext(Context, observedBits);
+    }
+
+    function useState(initialState) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useState(initialState);
+    }
+
+    function useReducer(reducer, initialState, initialAction) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useReducer(reducer, initialState, initialAction);
+    }
+
+    function useRef(initialValue) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useRef(initialValue);
+    }
+
+    function useEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useEffect(create, inputs);
+    }
+
+    function useMutationEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useMutationEffect(create, inputs);
+    }
+
+    function useLayoutEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useLayoutEffect(create, inputs);
+    }
+
+    function useCallback(callback, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useCallback(callback, inputs);
+    }
+
+    function useMemo(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useMemo(create, inputs);
+    }
+
+    function useImperativeMethods(ref, create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useImperativeMethods(ref, create, inputs);
     }
     /**
      * ReactElementValidator provides a wrapper around a element factory
@@ -2075,9 +2125,7 @@ if ("development" !== "production") {
       memo: memo,
       Fragment: REACT_FRAGMENT_TYPE,
       StrictMode: REACT_STRICT_MODE_TYPE,
-      unstable_ConcurrentMode: REACT_CONCURRENT_MODE_TYPE,
       Suspense: REACT_SUSPENSE_TYPE,
-      unstable_Profiler: REACT_PROFILER_TYPE,
       createElement: createElementWithValidation,
       cloneElement: cloneElementWithValidation,
       createFactory: createFactoryWithValidation,
@@ -2085,6 +2133,28 @@ if ("development" !== "production") {
       version: ReactVersion,
       __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
     };
+
+    if (enableStableConcurrentModeAPIs) {
+      React.ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      React.Profiler = REACT_PROFILER_TYPE;
+    } else {
+      React.unstable_ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      React.unstable_Profiler = REACT_PROFILER_TYPE;
+    }
+
+    if (enableHooks) {
+      React.useCallback = useCallback;
+      React.useContext = useContext;
+      React.useEffect = useEffect;
+      React.useImperativeMethods = useImperativeMethods;
+      React.useLayoutEffect = useLayoutEffect;
+      React.useMemo = useMemo;
+      React.useMutationEffect = useMutationEffect;
+      React.useReducer = useReducer;
+      React.useRef = useRef;
+      React.useState = useState;
+    }
+
     var React$2 = Object.freeze({
       default: React
     });
@@ -31327,7 +31397,7 @@ function (_React$Component) {
     value: function notifySlack() {
       var alternate = this.props.alternate;
       console.log(alternate);
-      fetch(undefined, {
+      fetch("https://hooks.slack.com/services/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", {
         credentials: 'omit',
         method: 'POST',
         body: JSON.stringify({
@@ -31588,7 +31658,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  text-align:center;\n  margin-top: 10px;\n  @media ", " {\n    font-size: 13px;\n  }\n  @media ", " {\n    font-size: 15px;\n  }\n  @media ", " {\n    font-size: 17px;\n  }\n  @media ", " {\n    font-size: 20px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  text-align:center;\n  margin-top: 10px;\n  @media ", " {\n    font-size: 13px;\n  }\n  @media ", " {\n    font-size: 15px;\n  }\n  @media ", " {\n    font-size: 17px;\n  }\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 35px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -31598,7 +31668,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'Valencia';\n  text-align:center;\n  padding-right: 10px;\n  @media ", " {\n    font-size: 70px;\n  }\n  @media ", " {\n    font-size: 80px;\n  }\n  @media ", " {\n    font-size: 90px;\n  }\n  @media ", " {\n    font-size: 100px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'Valencia';\n  text-align:center;\n  padding-right: 10px;\n  @media ", " {\n    font-size: 70px;\n  }\n  @media ", " {\n    font-size: 80px;\n  }\n  @media ", " {\n    font-size: 90px;\n  }\n  @media ", " {\n    font-size: 150px;\n  }\n  @media ", " {\n    font-size: 160px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31621,9 +31691,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Container = _styledComponents.default.section(_templateObject());
 
-var Name = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var Name = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
-var Title = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var Title = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
 var NameAndJobTitle =
 /*#__PURE__*/
@@ -31685,7 +31755,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  font-size: 24px;\n  text-align: center;\n  @media ", " {\n    padding: 30px;\n    font-size: 20px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 23px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 24px;\n  }\n  @media ", " {\n    padding: 80px;\n    font-size: 30px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  font-size: 24px;\n  text-align: center;\n  @media ", " {\n    padding: 30px;\n    font-size: 20px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 23px;\n  }\n  @media ", " {\n    padding: 30px;\n    font-size: 24px;\n  }\n  @media ", " {\n    padding: 80px;\n    font-size: 40px;\n  }\n  @media ", " {\n    padding: 90px;\n    font-size: 45px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31708,7 +31778,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Container = _styledComponents.default.section(_templateObject());
 
-var AboutMeDescription = _styledComponents.default.span(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var AboutMeDescription = _styledComponents.default.span(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
 var AboutMe =
 /*#__PURE__*/
@@ -31829,7 +31899,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  z-index: 1;\n  \n  @media ", " {\n    margin-top: 20px;\n    font-size: 20px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 23px;\n  }\n  @media ", " {\n    margin-top: 20px;\n    font-size: 25px;\n  }\n  @media ", " {\n    margin-top: 30px;\n    font-size: 30px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirRoman';\n  z-index: 1;\n  \n  @media ", " {\n    margin-top: 30px;\n    font-size: 20px;\n  }\n  @media ", " {\n    margin-top: 35px;\n    font-size: 23px;\n  }\n  @media ", " {\n    margin-top: 35px;\n    font-size: 25px;\n  }\n  @media ", " {\n    margin-top: 45px;\n    font-size: 35px;\n  }\n  @media ", " {\n    margin-top: 60px;\n    font-size: 45px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -31839,7 +31909,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #000;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #000;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 90px;\n  }\n  @media ", " {\n    font-size: 95px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31849,7 +31919,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31860,11 +31930,11 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
-var SkillsTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var SkillsTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
-var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
 var Skills =
 /*#__PURE__*/
@@ -31926,7 +31996,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n/* border: 1px solid black; */\n@media ", " {\n    height: 90px;\n    width: 90px;\n  }\n  @media ", " {\n    height: 180px;\n    width: 180px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n/* border: 1px solid black; */\n  @media ", " {\n    height: 65px;\n    width: 65px;\n  }\n  @media ", " {\n    height: 80px;\n    width: 80px;\n  }\n  @media ", " {\n    height: 100px;\n    width: 100px;\n  }\n  @media ", " {\n    height: 130px;\n    width: 130px;\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31937,7 +32007,7 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var LogoImage = _styledComponents.default.img(_templateObject(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var LogoImage = _styledComponents.default.img(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
 
 var SocialLogo =
 /*#__PURE__*/
@@ -32029,7 +32099,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid black; */\n  margin-top: 60px;\n  z-index: 1;\n  display: grid;\n  grid-template: 80px 80px 80px / 1fr 1fr;\n  grid-gap: 40px;\n"]);
+  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid black; */\n  z-index: 1;\n  display: grid;\n  grid-template: 80px 80px 80px / 1fr 1fr;\n  @media ", " {\n    margin-top: 60px;\n    grid-gap: 40px;\n  }\n  @media ", " {\n    margin-top: 60px;\n    grid-gap: 60px;\n  }\n  @media ", " {\n    margin-top: 60px;\n    grid-gap: 70px;\n  }\n  @media ", " {\n    margin-top: 80px;\n    grid-gap: 170px;\n  }\n  @media ", " {\n    margin-top: 120px;\n    grid-gap: 200px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -32039,7 +32109,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #000;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  color: #000;\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  @media ", " {\n    font-size: 60px;\n  }\n  @media ", " {\n    font-size: 90px;\n  }\n  @media ", " {\n    font-size: 95px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -32049,7 +32119,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    margin-bottom:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -32060,11 +32130,11 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var Container = _styledComponents.default.section(_templateObject(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
-var ContactTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet);
+var ContactTitle = _styledComponents.default.div(_templateObject2(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
-var SocialMediaIcons = _styledComponents.default.div(_templateObject3());
+var SocialMediaIcons = _styledComponents.default.div(_templateObject3(), _breakpoints.default.mobileS, _breakpoints.default.mobileM, _breakpoints.default.mobileL, _breakpoints.default.tablet, _breakpoints.default.laptop);
 
 var Contact =
 /*#__PURE__*/
@@ -32113,7 +32183,7 @@ function (_Component) {
 
 var _default = Contact;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/Mobile/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/lib/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/Mobile/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -32145,7 +32215,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/lib/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -32180,12 +32250,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/lib/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/lib/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
+},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
@@ -32268,12 +32338,12 @@ function (_Component) {
         window.history.scrollRestoration = 'manual';
       }
 
-      fetch(undefined).then(function (data) {
+      fetch("https://ipinfo.io/json").then(function (data) {
         return data.json();
       }).then(function (ipInfo) {
         var ua = (0, _uaParserJs.default)(navigator.userAgent);
         var message = "".concat(ipInfo.region, ", ").concat(ipInfo.city, "\n         \u2022 ").concat(ua.browser.name, " ").concat(ua.browser.version, "\n         \u2022 ").concat(ua.os.name, " ").concat(ua.os.version, "\n         \u2022 ").concat(ipInfo.org);
-        fetch(undefined, {
+        fetch("https://hooks.slack.com/services/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", {
           credentials: 'omit',
           method: 'POST',
           body: JSON.stringify({
@@ -32297,7 +32367,7 @@ function (_Component) {
 }(_react.Component);
 
 (0, _reactDom.render)(_react.default.createElement(App), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Slides/Mobile/ContactSlide/Contact":"Slides/Mobile/ContactSlide/Contact.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Slides/Mobile/ContactSlide/Contact":"Slides/Mobile/ContactSlide/Contact.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -32324,7 +32394,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53472" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60298" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -32466,5 +32536,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js","App.js"], null)
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","App.js"], null)
 //# sourceMappingURL=/App.d36a57b6.map
