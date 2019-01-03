@@ -31327,7 +31327,7 @@ function (_React$Component) {
     value: function notifySlack() {
       var alternate = this.props.alternate;
       console.log(alternate);
-      fetch(undefined, {
+      fetch("https://hooks.slack.com/services/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", {
         credentials: 'omit',
         method: 'POST',
         body: JSON.stringify({
@@ -34017,7 +34017,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63780" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51373" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
