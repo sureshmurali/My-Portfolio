@@ -31608,7 +31608,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column nowrap;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    min-height: 50vh;\n    transition: min-height 999999s;\n    width:100%;\n    background-color: white;\n    /* border: 1px solid blue; */\n"]);
+  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column nowrap;\n    justify-content: center;\n    align-items: center;\n    height:50vh;\n    width:100%;\n    background-color: white;\n    /* border: 1px solid blue; */\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31695,7 +31695,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100%;/* Since pageSplitTime is 1.4 */\n    min-height: 50vh;\n    transition: min-height 999999s;\n    width:100%;\n    border: 1px solid blue;\n    display: flex;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 50vh;/* Since pageSplitTime is 1.4 */\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: row nowrap;\n    justify-content: center;\n    align-items: center;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31951,7 +31951,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\nposition: fixed;\ntop:0;\nleft:0;\ndisplay: flex;\nflex-flow: column nowrap;\n/* border: 1px dashed black; */\nheight: 100%;\nmin-height: 100vh;\ntransition: min-height 999999s;\nwidth: 100%;\n"]);
+  var data = _taggedTemplateLiteral(["\nposition: fixed;\ntop:0;\nleft:0;\ndisplay: flex;\nflex-flow: column nowrap;\n/* border: 1px dashed black; */\nheight:100vh;\nwidth: 100%;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -33141,7 +33141,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n/* outline: 0.1px dashed green; */\nmargin-top:30vh;\nheight:100%;\nmin-height: 100vh;\ntransition: min-height 999999s;\nposition: relative;\n"]);
+  var data = _taggedTemplateLiteral(["\n/* outline: 0.1px dashed green; */\nmargin-top:30vh;\nheight: 100vh;\nposition: relative;\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -33151,7 +33151,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n/* border: 0.1px dashed black; */\nwidth:100%;\nheight:100%;\nmin-height: 900vh;\ntransition: min-height 999999s;\nmargin-bottom:30vh;\ndisplay: flex;\nflex-flow: column nowrap;\n"]);
+  var data = _taggedTemplateLiteral(["\n/* border: 0.1px dashed black; */\nwidth:100%;\nheight:900vh;\nmargin-bottom:30vh;\ndisplay: flex;\nflex-flow: column nowrap;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34017,7 +34017,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57582" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52082" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
