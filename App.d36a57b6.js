@@ -33069,7 +33069,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\ntransition: transform 0.2s ease-out;\nbottom:-135vh;\nleft: 2vw;\ntransform-origin: left center;\nposition: absolute;\n/* border: 1px dashed red; */\nheight: 70vh;\nfilter: blur(1px);\n"]);
+  var data = _taggedTemplateLiteral(["\ntransition: transform 0.2s ease-out;\nbottom:-135vh;\nleft: 3vw;\ntransform-origin: left center;\nposition: absolute;\n/* border: 1px dashed red; */\nheight: 70vh;\nfilter: blur(1px);\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -33079,7 +33079,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\ntransition: transform 0.2s ease-out;\nposition: absolute;\nbottom: -210vh;\nright: 2vw;\ntransform-origin: right center;\n/* border: 1px dashed red; */\nfilter: blur(0.6px);\nheight: 70vh; \n"]);
+  var data = _taggedTemplateLiteral(["\ntransition: transform 0.2s ease-out;\nposition: absolute;\nbottom: -210vh;\nright: 3vw;\ntransform-origin: right center;\n/* border: 1px dashed red; */\nfilter: blur(0.6px);\nheight: 70vh; \n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -33276,7 +33276,7 @@ var Dots = _styledComponents.default.img.attrs({
   style: function style(_ref) {
     var scroll = _ref.scroll;
     return {
-      transform: "translate(0px,-".concat(scroll * 38, "%) scale(0.99)")
+      transform: "translate(0px,-".concat(scroll * 36, "%) scale(0.99)")
     };
   }
 })(_templateObject());
@@ -33285,7 +33285,7 @@ var Bubbles = _styledComponents.default.img.attrs({
   style: function style(_ref2) {
     var scroll = _ref2.scroll;
     return {
-      transform: "translate(0px,-".concat(scroll * 24, "%) scale(0.9)")
+      transform: "translate(0px,-".concat(scroll * 25, "%) scale(0.9)")
     };
   }
 })(_templateObject2());
@@ -33294,7 +33294,7 @@ var BigBubble = _styledComponents.default.img.attrs({
   style: function style(_ref3) {
     var scroll = _ref3.scroll;
     return {
-      transform: "translate(0px,-".concat(scroll * 12, "%) scale(0.8)")
+      transform: "translate(0px,-".concat(scroll * 13, "%) scale(0.8)")
     };
   }
 })(_templateObject3());
@@ -33303,7 +33303,7 @@ var Paths = _styledComponents.default.img.attrs({
   style: function style(_ref4) {
     var scroll = _ref4.scroll;
     return {
-      transform: "translate(0px,-".concat(scroll * 3, "%) scale(0.7)")
+      transform: "translate(0px,-".concat(scroll * 4, "%) scale(0.7)")
     };
   }
 })(_templateObject4());
@@ -34295,7 +34295,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53346" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65169" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
