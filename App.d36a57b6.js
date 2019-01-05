@@ -298,7 +298,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 },{"./lib/ReactPropTypesSecret":"../node_modules/prop-types/lib/ReactPropTypesSecret.js"}],"../node_modules/react/cjs/react.development.js":[function(require,module,exports) {
-/** @license React v16.6.0
+/** @license React v16.6.1
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -317,7 +317,7 @@ if ("development" !== "production") {
     var checkPropTypes = require('prop-types/checkPropTypes'); // TODO: this is special because it gets imported during build.
 
 
-    var ReactVersion = '16.6.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+    var ReactVersion = '16.6.3'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
     // nor polyfill, then a plain number is used for performance.
 
     var hasSymbol = typeof Symbol === 'function' && Symbol.for;
@@ -349,6 +349,25 @@ if ("development" !== "production") {
 
       return null;
     }
+
+    var enableHooks = false; // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+    // In some cases, StrictMode should also double-render lifecycles.
+    // This can be confusing for tests though,
+    // And it can be bad for performance in production.
+    // This feature flag can be used to control the behavior:
+    // To preserve the "Pause on caught exceptions" behavior of the debugger, we
+    // replay the begin phase of a failed component inside invokeGuardedCallback.
+    // Warn about deprecated, async-unsafe lifecycles; relates to RFC #6:
+    // Gather advanced timing metrics for Profiler subtrees.
+    // Trace which interactions trigger each commit.
+    // Only used in www builds.
+    // Only used in www builds.
+    // React Fire: prevent the value and checked attributes from syncing
+    // with their related DOM properties
+    // These APIs will no longer be "unstable" in the upcoming 16.7 release,
+    // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
+
+    var enableStableConcurrentModeAPIs = false;
     /**
      * Use invariant() to assert state which your program assumes to be true.
      *
@@ -359,7 +378,6 @@ if ("development" !== "production") {
      * The invariant message will be stripped in production, but the invariant
      * will remain to ensure logic does not differ in production.
      */
-
 
     var validateFormat = function () {};
 
@@ -479,61 +497,13 @@ if ("development" !== "production") {
         }
 
         if (typeof console !== 'undefined') {
-          var _args$map = args.map(function (item) {
+          var argsWithFormat = args.map(function (item) {
             return '' + item;
-          }),
-              a = _args$map[0],
-              b = _args$map[1],
-              c = _args$map[2],
-              d = _args$map[3],
-              e = _args$map[4],
-              f = _args$map[5],
-              g = _args$map[6],
-              h = _args$map[7];
+          });
+          argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
+          // breaks IE9: https://github.com/facebook/react/issues/13610
 
-          var message = 'Warning: ' + format; // We intentionally don't use spread (or .apply) because it breaks IE9:
-          // https://github.com/facebook/react/issues/13610
-
-          switch (args.length) {
-            case 0:
-              console.error(message);
-              break;
-
-            case 1:
-              console.error(message, a);
-              break;
-
-            case 2:
-              console.error(message, a, b);
-              break;
-
-            case 3:
-              console.error(message, a, b, c);
-              break;
-
-            case 4:
-              console.error(message, a, b, c, d);
-              break;
-
-            case 5:
-              console.error(message, a, b, c, d, e);
-              break;
-
-            case 6:
-              console.error(message, a, b, c, d, e, f);
-              break;
-
-            case 7:
-              console.error(message, a, b, c, d, e, f, g);
-              break;
-
-            case 8:
-              console.error(message, a, b, c, d, e, f, g, h);
-              break;
-
-            default:
-              throw new Error('warningWithoutStack() currently supports at most 8 arguments.');
-          }
+          Function.prototype.apply.call(console.error, console, argsWithFormat);
         }
 
         try {
@@ -541,12 +511,10 @@ if ("development" !== "production") {
           // This error was thrown as a convenience so that you can use this stack
           // to find the callsite that caused this warning to fire.
           var argIndex = 0;
-
-          var _message = 'Warning: ' + format.replace(/%s/g, function () {
+          var message = 'Warning: ' + format.replace(/%s/g, function () {
             return args[argIndex++];
           });
-
-          throw new Error(_message);
+          throw new Error(message);
         } catch (x) {}
       };
     }
@@ -1637,6 +1605,9 @@ if ("development" !== "production") {
         // Secondary renderers store their context values on separate fields.
         _currentValue: defaultValue,
         _currentValue2: defaultValue,
+        // Used to track how many concurrent renderers this context currently
+        // supports within in a single renderer. Such as parallel server rendering.
+        _threadCount: 0,
         // These are circular
         Provider: null,
         Consumer: null
@@ -1687,6 +1658,14 @@ if ("development" !== "production") {
               context._currentValue2 = _currentValue2;
             }
           },
+          _threadCount: {
+            get: function () {
+              return context._threadCount;
+            },
+            set: function (_threadCount) {
+              context._threadCount = _threadCount;
+            }
+          },
           Consumer: {
             get: function () {
               if (!hasWarnedAboutUsingNestedContextConsumers) {
@@ -1720,7 +1699,9 @@ if ("development" !== "production") {
 
     function forwardRef(render) {
       {
-        if (typeof render !== 'function') {
+        if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
+          warningWithoutStack$1(false, 'forwardRef requires a render function but received a `memo` ' + 'component. Instead of forwardRef(memo(...)), use ' + 'memo(forwardRef(...)).');
+        } else if (typeof render !== 'function') {
           warningWithoutStack$1(false, 'forwardRef requires a render function but was given %s.', render === null ? 'null' : typeof render);
         } else {
           !( // Do not warn for 0 arguments because it could be due to usage of the 'arguments' object
@@ -1753,6 +1734,75 @@ if ("development" !== "production") {
         type: type,
         compare: compare === undefined ? null : compare
       };
+    }
+
+    function resolveDispatcher() {
+      var dispatcher = ReactCurrentOwner.currentDispatcher;
+      !(dispatcher !== null) ? invariant(false, 'Hooks can only be called inside the body of a function component.') : void 0;
+      return dispatcher;
+    }
+
+    function useContext(Context, observedBits) {
+      var dispatcher = resolveDispatcher();
+      {
+        // TODO: add a more generic warning for invalid values.
+        if (Context._context !== undefined) {
+          var realContext = Context._context; // Don't deduplicate because this legitimately causes bugs
+          // and nobody should be using this in existing code.
+
+          if (realContext.Consumer === Context) {
+            warning$1(false, 'Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be ' + 'removed in a future major release. Did you mean to call useContext(Context) instead?');
+          } else if (realContext.Provider === Context) {
+            warning$1(false, 'Calling useContext(Context.Provider) is not supported. ' + 'Did you mean to call useContext(Context) instead?');
+          }
+        }
+      }
+      return dispatcher.useContext(Context, observedBits);
+    }
+
+    function useState(initialState) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useState(initialState);
+    }
+
+    function useReducer(reducer, initialState, initialAction) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useReducer(reducer, initialState, initialAction);
+    }
+
+    function useRef(initialValue) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useRef(initialValue);
+    }
+
+    function useEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useEffect(create, inputs);
+    }
+
+    function useMutationEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useMutationEffect(create, inputs);
+    }
+
+    function useLayoutEffect(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useLayoutEffect(create, inputs);
+    }
+
+    function useCallback(callback, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useCallback(callback, inputs);
+    }
+
+    function useMemo(create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useMemo(create, inputs);
+    }
+
+    function useImperativeMethods(ref, create, inputs) {
+      var dispatcher = resolveDispatcher();
+      return dispatcher.useImperativeMethods(ref, create, inputs);
     }
     /**
      * ReactElementValidator provides a wrapper around a element factory
@@ -2075,9 +2125,7 @@ if ("development" !== "production") {
       memo: memo,
       Fragment: REACT_FRAGMENT_TYPE,
       StrictMode: REACT_STRICT_MODE_TYPE,
-      unstable_ConcurrentMode: REACT_CONCURRENT_MODE_TYPE,
       Suspense: REACT_SUSPENSE_TYPE,
-      unstable_Profiler: REACT_PROFILER_TYPE,
       createElement: createElementWithValidation,
       cloneElement: cloneElementWithValidation,
       createFactory: createFactoryWithValidation,
@@ -2085,6 +2133,28 @@ if ("development" !== "production") {
       version: ReactVersion,
       __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
     };
+
+    if (enableStableConcurrentModeAPIs) {
+      React.ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      React.Profiler = REACT_PROFILER_TYPE;
+    } else {
+      React.unstable_ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      React.unstable_Profiler = REACT_PROFILER_TYPE;
+    }
+
+    if (enableHooks) {
+      React.useCallback = useCallback;
+      React.useContext = useContext;
+      React.useEffect = useEffect;
+      React.useImperativeMethods = useImperativeMethods;
+      React.useLayoutEffect = useLayoutEffect;
+      React.useMemo = useMemo;
+      React.useMutationEffect = useMutationEffect;
+      React.useReducer = useReducer;
+      React.useRef = useRef;
+      React.useState = useState;
+    }
+
     var React$2 = Object.freeze({
       default: React
     });
@@ -32085,7 +32155,209 @@ TextContent.propTypes = {
 };
 var _default = TextContent;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapImages.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/vh-check/dist/vh-check.js":[function(require,module,exports) {
+var define;
+var global = arguments[3];
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.vhCheck = factory());
+}(this, (function () { 'use strict';
+
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
+    // don't know a better way to get the size of a CSS 100vh…
+    function createTestElement() {
+        var testElement = document.createElement('div');
+        testElement.style.cssText =
+            'position: fixed; top: 0; height: 100vh; pointer-events: none;';
+        document.documentElement.insertBefore(testElement, document.documentElement.firstChild);
+        return testElement;
+    }
+    function removeTestElement(element) {
+        document.documentElement.removeChild(element);
+    }
+    //  in some browsers this will be bigger than window.innerHeight
+    function checkSizes() {
+        var vhTest = createTestElement();
+        var windowHeight = window.innerHeight;
+        var vh = vhTest.offsetHeight;
+        var offset = vh - windowHeight;
+        removeTestElement(vhTest);
+        return {
+            vh: vh,
+            windowHeight: windowHeight,
+            offset: offset,
+            isNeeded: offset !== 0,
+            value: 0,
+        };
+    }
+    // export
+    function noop() { }
+    function computeDifference() {
+        var sizes = checkSizes();
+        sizes.value = sizes.offset;
+        return sizes;
+    }
+    function redefineVhUnit() {
+        var sizes = checkSizes();
+        sizes.value = sizes.windowHeight * 0.01;
+        return sizes;
+    }
+
+    var methods = /*#__PURE__*/Object.freeze({
+        noop: noop,
+        computeDifference: computeDifference,
+        redefineVhUnit: redefineVhUnit
+    });
+
+    function isString(text) {
+        return typeof text === "string" && text.length > 0;
+    }
+    function isFunction(f) {
+        return typeof f === "function";
+    }
+    var defaultOptions = Object.freeze({
+        cssVarName: 'vh-offset',
+        redefineVh: false,
+        method: computeDifference,
+        force: false,
+        bind: true,
+        updateOnTouch: false,
+        onUpdate: noop,
+    });
+    function getOptions(options) {
+        // old options handling: only redefine the CSS var name
+        if (isString(options)) {
+            return __assign({}, defaultOptions, { cssVarName: options });
+        }
+        // be sure to have a configuration object
+        if (typeof options !== 'object')
+            return defaultOptions;
+        // make sure we have the right options to start with
+        var finalOptions = {
+            force: options.force === true,
+            bind: options.bind !== false,
+            updateOnTouch: options.updateOnTouch === true,
+            onUpdate: isFunction(options.onUpdate) ? options.onUpdate : noop,
+        };
+        // method change
+        var redefineVh = options.redefineVh === true;
+        finalOptions.method =
+            methods[redefineVh ? 'redefineVhUnit' : 'computeDifference'];
+        finalOptions.cssVarName = isString(options.cssVarName)
+            ? options.cssVarName
+            : redefineVh
+                ? /*
+                  when redefining vh unit we follow this article name convention
+                  https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+                */
+                    'vh'
+                : defaultOptions.cssVarName;
+        return finalOptions;
+    }
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
+    var passiveSupported = false;
+    var eventListeners = [];
+    /* istanbul ignore next */
+    try {
+        var options = Object.defineProperty({}, "passive", {
+            get: function () {
+                passiveSupported = true;
+            },
+        });
+        window.addEventListener("test", options, options);
+        window.removeEventListener("test", options, options);
+    }
+    catch (err) {
+        passiveSupported = false;
+    }
+    function addListener(eventName, callback) {
+        eventListeners.push({
+            eventName: eventName,
+            callback: callback,
+        });
+        window.addEventListener(eventName, callback, 
+        /* istanbul ignore next */
+        passiveSupported ? { passive: true } : false);
+    }
+    function removeAll() {
+        eventListeners.forEach(function (config) {
+            window.removeEventListener(config.eventName, config.callback);
+        });
+        eventListeners = [];
+    }
+
+    function updateCssVar(cssVarName, result) {
+        document.documentElement.style.setProperty("--" + cssVarName, result.value + "px");
+    }
+    function formatResult(sizes, options) {
+        return __assign({}, sizes, { unbind: removeAll, recompute: options.method });
+    }
+    function vhCheck(options) {
+        var config = Object.freeze(getOptions(options));
+        var result = formatResult(config.method(), config);
+        // usefulness check
+        if (!result.isNeeded && !config.force) {
+            return result;
+        }
+        updateCssVar(config.cssVarName, result);
+        config.onUpdate(result);
+        // enabled by default
+        if (!config.bind)
+            return result;
+        function onWindowChange() {
+            window.requestAnimationFrame(function () {
+                var sizes = config.method();
+                updateCssVar(config.cssVarName, sizes);
+                config.onUpdate(formatResult(sizes, config));
+            });
+        }
+        // be sure we don't duplicates events listeners
+        result.unbind();
+        // listen for orientation change
+        // - this can't be configured
+        // - because it's convenient and not a real performance bottleneck
+        addListener('orientationchange', onWindowChange);
+        // listen to touch move for scrolling
+        // – disabled by default
+        // - listening to scrolling can be expansive…
+        if (config.updateOnTouch) {
+            addListener('touchmove', onWindowChange);
+        }
+        return result;
+    }
+
+    return vhCheck;
+
+})));
+
+},{}],"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapImages.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33106,6 +33378,8 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _vhCheck = _interopRequireDefault(require("vh-check"));
+
 var _VoistrapImages = _interopRequireDefault(require("./ParallaxImages/VoistrapImages"));
 
 var _WhatsMyFoodImages = _interopRequireDefault(require("./ParallaxImages/WhatsMyFoodImages"));
@@ -33189,12 +33463,13 @@ function (_Component) {
   _createClass(ImageContent, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var vhDiff = (0, _vhCheck.default)().offset;
       window.addEventListener('scroll', this.handleScroll);
       this.setState({
         scrollHeight: Math.round(window.document.documentElement.scrollHeight)
       });
       this.setState({
-        screenHeight: Math.round(window.document.documentElement.clientHeight)
+        screenHeight: Math.round(window.document.documentElement.clientHeight + vhDiff)
       });
       console.log('scrollHeight', Math.round(window.document.documentElement.scrollHeight));
       console.log('screenHeight', Math.round(window.document.documentElement.clientHeight));
@@ -33290,7 +33565,7 @@ ImageContent.propTypes = {
 };
 var _default = ImageContent;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","./ParallaxImages/VoistrapImages":"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapImages.js","./ParallaxImages/WhatsMyFoodImages":"Slides/Mobile/WorkSlide/ParallaxImages/WhatsMyFoodImages.js","./ParallaxImages/ComingOrNotImages":"Slides/Mobile/WorkSlide/ParallaxImages/ComingOrNotImages.js","./ParallaxImages/TeslaImages":"Slides/Mobile/WorkSlide/ParallaxImages/TeslaImages.js","./ParallaxImages/KosenImages":"Slides/Mobile/WorkSlide/ParallaxImages/KosenImages.js","./ParallaxImages/VoistrapWebImages":"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapWebImages.js"}],"Slides/Mobile/WorkSlide/Work.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","prop-types":"../node_modules/prop-types/index.js","vh-check":"../node_modules/vh-check/dist/vh-check.js","./ParallaxImages/VoistrapImages":"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapImages.js","./ParallaxImages/WhatsMyFoodImages":"Slides/Mobile/WorkSlide/ParallaxImages/WhatsMyFoodImages.js","./ParallaxImages/ComingOrNotImages":"Slides/Mobile/WorkSlide/ParallaxImages/ComingOrNotImages.js","./ParallaxImages/TeslaImages":"Slides/Mobile/WorkSlide/ParallaxImages/TeslaImages.js","./ParallaxImages/KosenImages":"Slides/Mobile/WorkSlide/ParallaxImages/KosenImages.js","./ParallaxImages/VoistrapWebImages":"Slides/Mobile/WorkSlide/ParallaxImages/VoistrapWebImages.js"}],"Slides/Mobile/WorkSlide/Work.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33740,7 +34015,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    margin-bottom:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    margin-top:20vh;\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    margin-bottom:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34017,7 +34292,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52082" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57206" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
