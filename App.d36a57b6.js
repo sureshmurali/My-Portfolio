@@ -33693,7 +33693,7 @@ function (_Component) {
     value: function componentDidMount() {
       window.addEventListener('scroll', this.handleScroll);
       this.setState({
-        vh: Math.round(window.innerHeight * this.pageSplitTimes)
+        vh: Math.round(window.document.documentElement.clientHeight * this.pageSplitTimes)
       });
     }
   }, {
@@ -34292,7 +34292,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57206" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61080" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
