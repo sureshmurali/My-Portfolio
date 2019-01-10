@@ -28862,7 +28862,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  font-family: ", ";\n  text-align:center;\n  @media ", " {\n    font-size: 100px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 150px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 200px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: ", ";\n  text-align:center;\n  @media ", " {\n    font-size: 100px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 140px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 150px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 200px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -28917,7 +28917,9 @@ var TextToReveal = _styledComponents.default.div(_templateObject4(), function (p
   return props.fontFam;
 }, _breakpoints.default.tablet, function (props) {
   return props.reveal ? moveUp(100) : 'none';
-}, 100 * 1.4, _breakpoints.default.laptopL, function (props) {
+}, 100 * 1.4, _breakpoints.default.laptop, function (props) {
+  return props.reveal ? moveUp(140) : 'none';
+}, 140 * 1.4, _breakpoints.default.laptopL, function (props) {
   return props.reveal ? moveUp(150) : 'none';
 }, 150 * 1.4, _breakpoints.default.desktop, function (props) {
   return props.reveal ? moveUp(200) : 'none';
@@ -29036,7 +29038,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  font-family: ", ";\n  text-align:center;\n  animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n  transform: translateY(", "px);\n  @media ", " {\n    font-size: 28px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 50px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 60px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: ", ";\n  text-align:center;\n  animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n  transform: translateY(", "px);\n  @media ", " {\n    font-size: 28px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 40px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 50px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n  @media ", " {\n    font-size: 60px;\n    animation: ", " 1s cubic-bezier(0, 0.1, .12, .99) forwards;\n    transform: translateY(", "px);\n  }\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -29095,7 +29097,9 @@ var TextToReveal = _styledComponents.default.div(_templateObject4(), function (p
   return props.fontSizeInPx * 1.4;
 }, _breakpoints.default.tablet, function (props) {
   return props.reveal ? moveUp(28) : 'none';
-}, 28 * 1.4, _breakpoints.default.laptopL, function (props) {
+}, 28 * 1.4, _breakpoints.default.laptop, function (props) {
+  return props.reveal ? moveUp(40) : 'none';
+}, 40 * 1.4, _breakpoints.default.laptopL, function (props) {
   return props.reveal ? moveUp(50) : 'none';
 }, 50 * 1.4, _breakpoints.default.desktop, function (props) {
   return props.reveal ? moveUp(60) : 'none';
@@ -29285,7 +29289,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  align-items: center;\n  font-family: 'AvenirLight';\n  text-align: left;\n  margin-left: 30%;\n  margin-right: 5%;\n  @media ", " {\n    transform: translateY(87%);\n    font-size: 38px;\n  }\n  @media ", " {\n    transform: translateY(80%);\n    font-size: 70px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  align-items: center;\n  font-family: 'AvenirLight';\n  text-align: left;\n  margin-left: 30%;\n  margin-right: 5%;\n  @media ", " {\n    transform: translateY(90%);\n    font-size: 30px;\n  }\n  @media ", " {\n    transform: translateY(87%);\n    font-size: 38px;\n  }\n  @media ", " {\n    transform: translateY(80%);\n    font-size: 70px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -29295,7 +29299,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  position: absolute;\n  color: #EEE;\n  top:5%;\n  left:-15%;\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  position: absolute;\n  color: #EEE;\n  top:5%;\n  left:-15%;\n  @media ", " {\n    font-size: 180px;\n  }\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -29325,9 +29329,9 @@ var AboutMeTitle = _styledComponents.default.div.attrs({
       transform: "translateX(".concat(scrollPercent * 5.5, "%)")
     };
   }
-})(_templateObject2(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+})(_templateObject2(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var AboutMeDescription = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var AboutMeDescription = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
 var AboutMe =
 /*#__PURE__*/
@@ -29556,7 +29560,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 58px;\n  }\n  /* border: 1px dashed black; */\n  padding: 5%;\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 25px;\n  }\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 58px;\n  }\n  /* border: 1px dashed black; */\n  padding: 5%;\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -29566,7 +29570,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 58px;\n  }\n  /* border: 1px dashed black; */\n  padding: 5%;\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 25px;\n  }\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 58px;\n  }\n  /* border: 1px dashed black; */\n  padding: 5%;\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -29576,7 +29580,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  padding-top:5%;\n  font-family: 'AvenirMedium';\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  /* border: 1px dashed black; */\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding-top:5%;\n  font-family: 'AvenirMedium';\n  @media ", " {\n    font-size: 25px;\n  }\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  /* border: 1px dashed black; */\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -29586,7 +29590,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  padding-top:2%;\n  font-family: 'AvenirBook';\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  /* border: 1px dashed black; */\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding-top:2%;\n  font-family: 'AvenirBook';\n  @media ", " {\n    font-size: 25px;\n  }\n  @media ", " {\n    font-size: 30px;\n  }\n  @media ", " {\n    font-size: 50px;\n  }\n  /* border: 1px dashed black; */\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -29596,7 +29600,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 80px;\n  }\n  @media ", " {\n    font-size: 120px;\n  }\n  /* border: 1px dashed black; */\n"]);
+  var data = _taggedTemplateLiteral(["\n  font-family: 'AvenirHeavy';\n  @media ", " {\n    font-size: 70px;\n  }\n  @media ", " {\n    font-size: 80px;\n  }\n  @media ", " {\n    font-size: 120px;\n  }\n  /* border: 1px dashed black; */\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -29619,15 +29623,15 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var TextContainer = _styledComponents.default.section(_templateObject());
 
-var ProjectName = _styledComponents.default.div(_templateObject2(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var ProjectName = _styledComponents.default.div(_templateObject2(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var ProjectDesc = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var ProjectDesc = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var MyRole = _styledComponents.default.div(_templateObject4(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var MyRole = _styledComponents.default.div(_templateObject4(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var ProjectID = _styledComponents.default.div(_templateObject5(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var ProjectID = _styledComponents.default.div(_templateObject5(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var ProjectType = _styledComponents.default.div(_templateObject6(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var ProjectType = _styledComponents.default.div(_templateObject6(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
 var ProjectDetails = _styledComponents.default.div(_templateObject7());
 
@@ -31100,7 +31104,7 @@ function (_Component) {
     value: function componentDidMount() {
       window.addEventListener('scroll', this.handleScroll);
       this.setState({
-        vh: Math.round(window.innerHeight * this.pageSplitTimes)
+        vh: Math.round(window.document.documentElement.clientHeight * this.pageSplitTimes)
       });
     }
   }, {
@@ -31202,7 +31206,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid #EFEFEF; */\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: space-between;\n  align-items: center;\n  font-family: 'AvenirRoman';\n  text-align: left;\n  margin-left: 15%;\n  margin-right: 10%;\n  z-index: 1;\n  transform: translateY(30%);\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  /* border: 1px solid #EFEFEF; */\n  display: flex;\n  flex-flow: row nowrap;\n  justify-content: space-between;\n  align-items: center;\n  font-family: 'AvenirRoman';\n  text-align: left;\n  margin-left: 15%;\n  margin-right: 10%;\n  z-index: 1;\n  transform: translateY(30%);\n  @media ", " {\n    font-size: 35px;\n  }\n  @media ", " {\n    font-size: 40px;\n  }\n  @media ", " {\n    font-size: 70px;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -31212,7 +31216,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  position: absolute;\n  color: #EEE;\n  top:40%;\n  right:-50%;\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  position: absolute;\n  color: #EEE;\n  top:40%;\n  right:-50%;\n  @media ", " {\n    font-size: 180px;\n  }\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31242,9 +31246,9 @@ var SkillsTitle = _styledComponents.default.div.attrs({
       transform: "translateX(-".concat(scrollPercent * 10, "%)")
     };
   }
-})(_templateObject2(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+})(_templateObject2(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
-var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var SkillsList = _styledComponents.default.div(_templateObject3(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
 var Skills =
 /*#__PURE__*/
@@ -31364,7 +31368,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n/* border: 1px solid black; */\n@media ", " {\n    height: 90px;\n    width: 90px;\n  }\n  @media ", " {\n    height: 180px;\n    width: 180px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n/* border: 1px solid black; */\n@media ", " {\n    height: 85px;\n    width: 85px;\n  }\n@media ", " {\n    height: 90px;\n    width: 90px;\n  }\n  @media ", " {\n    height: 180px;\n    width: 180px;\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -31375,7 +31379,7 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var LogoImage = _styledComponents.default.img(_templateObject(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+var LogoImage = _styledComponents.default.img(_templateObject(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
 var SocialLogo =
 /*#__PURE__*/
@@ -31495,7 +31499,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  font-size: 200px;\n  position: absolute;\n  color: #EEE;\n  top:12%;\n  left:-70%;\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  transition: transform 0.5s ease-out;\n  font-family: 'AvenirHeavy';\n  font-size: 200px;\n  position: absolute;\n  color: #EEE;\n  top:12%;\n  left:-70%;\n  @media ", " {\n    font-size: 180px;\n  }\n  @media ", " {\n    font-size: 200px;\n  }\n  @media ", " {\n    font-size: 350px;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -31525,7 +31529,7 @@ var ContactTitle = _styledComponents.default.div.attrs({
       transform: "translateX(".concat(scrollPercent * 8, "%)")
     };
   }
-})(_templateObject2(), _breakpoints.default.laptopL, _breakpoints.default.desktop);
+})(_templateObject2(), _breakpoints.default.laptop, _breakpoints.default.laptopL, _breakpoints.default.desktop);
 
 var SocialMediaIcons = _styledComponents.default.div(_templateObject3());
 
@@ -34295,7 +34299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65169" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63918" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
