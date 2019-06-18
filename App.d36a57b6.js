@@ -33822,7 +33822,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: flex-start;\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    }\n    @media ", " {\n    padding-left:120px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34022,7 +34022,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    margin-top:20vh;\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    margin-bottom:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    margin-top:20vh;\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: flex-start;\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n    @media ", " {\n    padding-left:120px;\n    margin-bottom:120px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34299,7 +34299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51906" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53557" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
