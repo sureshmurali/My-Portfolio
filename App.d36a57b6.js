@@ -31310,7 +31310,7 @@ function (_Component) {
       var scrollPercent = this.state.scrollPercent;
       return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, {
         scrollPercent: scrollPercent
-      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
+      }, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Rapid Prototyping", _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "Interaction Development", _react.default.createElement("br", null)), _react.default.createElement("div", null, "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Abstract", _react.default.createElement("br", null))));
     }
   }]);
 
@@ -33822,7 +33822,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: flex-start;\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    }\n    @media ", " {\n    padding-left:120px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -33853,7 +33853,7 @@ function (_Component) {
   _createClass(Skills, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, null, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "CSS Flexbox / Grids", _react.default.createElement("br", null), "Scalable Vector Graphics", _react.default.createElement("br", null), _react.default.createElement("br", null), "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Invision", _react.default.createElement("br", null))));
+      return _react.default.createElement(Container, null, _react.default.createElement(SkillsTitle, null, "SKILLS"), _react.default.createElement(SkillsList, null, _react.default.createElement("div", null, "React", _react.default.createElement("br", null), "React Native", _react.default.createElement("br", null), "Node.js", _react.default.createElement("br", null), _react.default.createElement("br", null), "Rapid Prototyping", _react.default.createElement("br", null), "Functional Programming", _react.default.createElement("br", null), "Interaction Development", _react.default.createElement("br", null), _react.default.createElement("br", null), "Responsive Design", _react.default.createElement("br", null), "Testing & Debugging", _react.default.createElement("br", null), "Application Architecture", _react.default.createElement("br", null), _react.default.createElement("br", null), "Sketch", _react.default.createElement("br", null), "Principle", _react.default.createElement("br", null), "Abstract", _react.default.createElement("br", null))));
     }
   }]);
 
@@ -34022,7 +34022,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    margin-top:20vh;\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: center;\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:30px;\n    }\n    @media ", " {\n    padding-left:60px;\n    margin-bottom:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    margin-top:20vh;\n    height: 100vh;\n    width:100%;\n    /* border: 1px solid blue; */\n    display: flex;\n    flex-flow: column wrap;\n    justify-content: center;\n    align-content: flex-start;\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:60px;\n    }\n    @media ", " {\n    padding-left:90px;\n    margin-bottom:90px;\n    }\n    @media ", " {\n    padding-left:120px;\n    margin-bottom:120px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34086,7 +34086,7 @@ function (_Component) {
 
 var _default = Contact;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/Mobile/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/lib/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../../../Assets/Images/Social/twitter.svg":"Assets/Images/Social/twitter.svg","../../../Assets/Images/Social/git.svg":"Assets/Images/Social/git.svg","../../../Assets/Images/Social/mail.svg":"Assets/Images/Social/mail.svg","../../../Assets/Images/Social/insta.svg":"Assets/Images/Social/insta.svg","../../../Assets/Images/Social/dribbble.svg":"Assets/Images/Social/dribbble.svg","../../../Assets/Images/Social/linkedin.svg":"Assets/Images/Social/linkedin.svg","./SocialLogo":"Slides/Mobile/ContactSlide/SocialLogo.js","../../../Assets/Responsive/breakpoints":"Assets/Responsive/breakpoints.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -34118,7 +34118,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/lib/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -34153,12 +34153,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/lib/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"Assets/index.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/lib/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
+},{"./Fonts/Avenir/Avenir-Light-07.ttf":[["Avenir-Light-07.0f87d3ed.ttf","Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"Assets/Fonts/Avenir/Avenir-Light-07.ttf"],"./Fonts/Avenir/Avenir-Roman-12.ttf":[["Avenir-Roman-12.5e177e9c.ttf","Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"Assets/Fonts/Avenir/Avenir-Roman-12.ttf"],"./Fonts/Avenir/Avenir-Book-01.ttf":[["Avenir-Book-01.d88b5c28.ttf","Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"Assets/Fonts/Avenir/Avenir-Book-01.ttf"],"./Fonts/Avenir/Avenir-Medium-09.ttf":[["Avenir-Medium-09.2c564d4e.ttf","Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"Assets/Fonts/Avenir/Avenir-Medium-09.ttf"],"./Fonts/Avenir/Avenir-Heavy-05.ttf":[["Avenir-Heavy-05.cab84c3f.ttf","Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"Assets/Fonts/Avenir/Avenir-Heavy-05.ttf"],"./Fonts/Valencia/Valencia.ttf":[["Valencia.a0ebc654.ttf","Assets/Fonts/Valencia/Valencia.ttf"],"Assets/Fonts/Valencia/Valencia.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
@@ -34272,7 +34272,7 @@ function (_Component) {
 }(_react.Component);
 
 (0, _reactDom.render)(_react.default.createElement(App), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/WorkSlide/Work":"Slides/Mobile/WorkSlide/Work.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Slides/Mobile/ContactSlide/Contact":"Slides/Mobile/ContactSlide/Contact.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","ua-parser-js":"../node_modules/ua-parser-js/src/ua-parser.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-responsive":"../node_modules/react-responsive/dist/react-responsive.js","./Slides/WideScreen/HeroSlide/Hero":"Slides/WideScreen/HeroSlide/Hero.js","./Slides/WideScreen/WorkSlide/Work":"Slides/WideScreen/WorkSlide/Work.js","./Slides/WideScreen/Skills":"Slides/WideScreen/Skills.js","./Slides/WideScreen/ContactSlide/Contact":"Slides/WideScreen/ContactSlide/Contact.js","./Slides/Mobile/HeroSlide/Hero":"Slides/Mobile/HeroSlide/Hero.js","./Slides/Mobile/WorkSlide/Work":"Slides/Mobile/WorkSlide/Work.js","./Slides/Mobile/Skills":"Slides/Mobile/Skills.js","./Slides/Mobile/ContactSlide/Contact":"Slides/Mobile/ContactSlide/Contact.js","./Assets/index.css":"Assets/index.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -34299,7 +34299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63918" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57869" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -34441,5 +34441,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../node_modules/parcel-bundler/lib/builtins/hmr-runtime.js","App.js"], null)
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","App.js"], null)
 //# sourceMappingURL=/App.d36a57b6.map
