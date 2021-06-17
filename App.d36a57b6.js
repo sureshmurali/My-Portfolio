@@ -36756,7 +36756,7 @@ var SocialLogo = /*#__PURE__*/function (_React$Component) {
     value: function notifySlack() {
       var alternate = this.props.alternate;
       console.log(alternate);
-      fetch("https://hooks.slack.com/services/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", {
+      fetch("https://hooks.slack.com/services/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", {
         credentials: 'omit',
         method: 'POST',
         body: JSON.stringify({
@@ -39200,12 +39200,12 @@ var App = /*#__PURE__*/function (_Component) {
         window.history.scrollRestoration = 'manual';
       }
 
-      fetch("https://ipinfo.io/json?token=20e04f4efd5a36").then(function (data) {
+      fetch(atob("aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDY5SjhGTDA2L0IwMjVTSjJNVjZEL3NOSFVWZWlmck5iVUx2dGJTcW9YNzdveA==")).then(function (data) {
         return data.json();
       }).then(function (ipInfo) {
         var ua = (0, _uaParserJs.default)(navigator.userAgent);
         var message = "".concat(ipInfo.region, ", ").concat(ipInfo.city, "\n         \u2022 ").concat(ua.browser.name, " ").concat(ua.browser.version, "\n         \u2022 ").concat(ua.os.name, " ").concat(ua.os.version, "\n         \u2022 ").concat(ipInfo.org);
-        fetch("https://hooks.slack.com/services/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", {
+        fetch("https://hooks.slack.com/services/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", {
           credentials: 'omit',
           headers: {
             'Content-type': 'application/x-www-form-urlencoded'
@@ -39260,7 +39260,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54408" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52268" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
