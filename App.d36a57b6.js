@@ -36756,7 +36756,7 @@ var SocialLogo = /*#__PURE__*/function (_React$Component) {
     value: function notifySlack() {
       var alternate = this.props.alternate;
       console.log(alternate);
-      fetch("https://hooks.slack.com/services/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", {
+      fetch("https://hooks.slack.com/services/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", {
         credentials: 'omit',
         method: 'POST',
         body: JSON.stringify({
@@ -39205,10 +39205,10 @@ var App = /*#__PURE__*/function (_Component) {
       }).then(function (ipInfo) {
         var ua = (0, _uaParserJs.default)(navigator.userAgent);
         var message = "".concat(ipInfo.region, ", ").concat(ipInfo.city, "\n         \u2022 ").concat(ua.browser.name, " ").concat(ua.browser.version, "\n         \u2022 ").concat(ua.os.name, " ").concat(ua.os.version, "\n         \u2022 ").concat(ipInfo.org);
-        fetch("https://hooks.slack.com/services/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", {
+        fetch("https://hooks.slack.com/services/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", {
           credentials: 'omit',
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/x-www-form-urlencoded'
           },
           method: 'POST',
           body: JSON.stringify({
@@ -39260,7 +39260,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49887" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
